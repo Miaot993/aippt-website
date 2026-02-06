@@ -1,0 +1,23 @@
+---
+import type { Props } from "@astrojs/starlight/props";
+import Default from "@astrojs/starlight/components/Head.astro";
+---
+
+<Default {...Astro.props}><slot /></Default>
+
+<script is:inline>
+  (function () {
+    try {
+      // 这里的逻辑必须极简，越快越好
+      const role = localStorage.getItem("user_role");
+
+      // 如果是 Pro，立刻贴上标签
+      // 此时 <body> 还没开始渲染，所以之后 CSS 匹配时，直接就是显示状态
+      if (role === "pro") {
+        document.documentElement.setAttribute("data-user-role", "pro");
+      }
+    } catch (e) {
+      // 容错处理
+    }
+  })();
+</script>

@@ -1,1 +1,93 @@
+/* src/styles/global.css */
 @import "tailwindcss";
+
+/* ✅ 核心修复：告诉 Tailwind，只要 html 标签上有 .dark 类，就启用暗黑样式 */
+@variant dark (&:where(.dark, .dark *));
+
+/* 告诉浏览器和 Starlight 组件使用暗色配色方案 */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+/* src/styles/global.css 的末尾 */
+
+/* =========================================
+   🛡️ CTO 权限控制样式 (Anti-Flash 版)
+   逻辑：默认所有人都看不到 Pro 内容，只有领了 Pro 身份证的才能看。
+   这样 Pro 内容在加载时就是“隐形”的，绝对不会闪现。
+   ========================================= */
+
+/* 如果 HTML 标签上没有 data-user-role="pro"，则隐藏 Pro 文件夹 */
+html:not([data-user-role="pro"]) details:has(a[href*="/pro/"]) {
+  display: none !important;
+}
+
+/* 备用：隐藏所有指向 /pro/ 的链接 */
+html:not([data-user-role="pro"]) a[href*="/pro/"] {
+  display: none !important;
+}
+
+/* =========================================
+   Starlight 主题色精准微调 (Minimal Override)
+   ========================================= */
+
+/* 🌞 浅色模式 (Light Mode) */
+:root[data-theme='light'] {
+  /* 选中文字/链接颜色：改为纯黑 (Zinc-900) */
+  --sl-color-text-accent: #18181b;
+  --sl-color-accent-high: #18181b;
+
+  /* 选中项的背景底色：改为极淡的灰色，去掉蓝色调 */
+  --sl-color-accent-low: #f4f4f5;
+  /* Zinc-100 */
+}
+
+/* 🌙 深色模式 (Dark Mode) */
+:root[data-theme='dark'] {
+  /* 1. 背景色：改为与首页一致的 Zinc-950 (#09090b) */
+  --sl-color-bg: #16161a;
+  --sl-color-bg-nav: #111114;
+  --sl-color-bg-sidebar: #212127;
+
+  /* 2. 选中文字/链接颜色：改为纯白 */
+  --sl-color-text-accent: #ffffff;
+  --sl-color-accent-high: #ffffff;
+
+  /* 3. 选中项的背景底色：改为深灰色 (Zinc-800)，去掉蓝色调 */
+  --sl-color-accent-low: #27272a;
+}
+
+/* =========================================
+   Starlight 顶栏 (Logo & Title) 尺寸统一修正
+   ========================================= */
+
+/* 1. 控制 Logo 图片大小 */
+/* 首页用的是 w-8 h-8 (即 32px)，这里强制对齐 */
+:root {
+  --sl-logo-height: 32px !important;
+  /* Starlight 提供的标准变量，改为 32px */
+}
+
+/* 如果上面的变量不生效，用这个更暴力的选择器兜底 */
+.site-title svg,
+.site-title img {
+  height: 32px !important;
+  width: auto;
+  /* 保持比例 */
+}
+
+/* 2. 控制 "AI&PPT 第二大脑" 文字大小 */
+/* 首页用的是 text-lg (即 18px / 1.125rem) */
+.site-title {
+  font-size: 18px !important;
+  /* 改大文字 */
+  font-weight: 700 !important;
+  /* 保持加粗 (font-bold) */
+  gap: 0.5rem !important;
+  /* Logo 和文字的间距，对应首页的 gap-2 */
+}
+
+/* 微调：防止文字在小屏幕换行 */
+.site-title span {
+  white-space: nowrap;
+}

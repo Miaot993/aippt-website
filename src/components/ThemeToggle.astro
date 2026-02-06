@@ -1,0 +1,91 @@
+---
+// src/components/ThemeToggle.astro
+---
+
+<theme-toggle>
+  <button
+    id="theme-toggle"
+    type="button"
+    class="relative flex items-center justify-center w-9 h-9 rounded-full text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors focus:outline-none"
+    aria-label="Toggle Dark Mode"
+  >
+    <svg
+      class="w-5 h-5 hidden dark:block"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+      ></path>
+    </svg>
+
+    <svg
+      class="w-5 h-5 block dark:hidden"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+      ></path>
+    </svg>
+  </button>
+</theme-toggle>
+
+<script>
+  // src/components/ThemeToggle.astro 的 <script> 部分
+
+  // 🛡️ 此时页面已经渲染完毕，这里只做“二次安检”
+  // 防止有人手动修改 HTML 属性后强行访问
+  (function () {
+    const role = localStorage.getItem("user_role") || "lite";
+
+    // 拦截非法访问
+    if (role !== "pro" && window.location.pathname.includes("/pro/")) {
+      window.stop();
+      window.location.href = "/";
+    }
+  })();
+
+  class ThemeToggle extends HTMLElement {
+    constructor() {
+      super();
+      const button = this.querySelector("button");
+
+      button?.addEventListener("click", () => {
+        const root = document.documentElement;
+
+        // 判断当前是不是暗色
+        // 逻辑：如果有 data-theme='dark' 或者 (没有设置过 且 系统是暗色)
+        const theme = root.getAttribute("data-theme");
+        const systemDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const isDark = theme === "dark" || (!theme && systemDark);
+
+        const nextTheme = isDark ? "light" : "dark";
+
+        // 1. 设置 Starlight 需要的属性
+        root.setAttribute("data-theme", nextTheme);
+
+        // 2. ✅ 核心修复：同步切换 Tailwind 需要的 class
+        if (nextTheme === "dark") {
+          root.classList.add("dark");
+        } else {
+          root.classList.remove("dark");
+        }
+
+        // 3. 记住用户的选择
+        localStorage.setItem("starlight-theme", nextTheme);
+      });
+    }
+  }
+  customElements.define("theme-toggle", ThemeToggle);
+</script>

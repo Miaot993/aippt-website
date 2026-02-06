@@ -1,0 +1,130 @@
+---
+// src/pages/lite.astro
+import "../styles/global.css";
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Lite Plan - 基础资源库</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-[#F5F5F4] text-[#1C1917] font-sans antialiased min-h-screen">
+    <nav
+      class="sticky top-0 z-50 bg-[#F5F5F4]/80 backdrop-blur-md border-b border-gray-200 px-6 py-4 flex justify-between items-center"
+    >
+      <a
+        href="/"
+        class="text-sm font-bold tracking-widest uppercase hover:text-purple-600 transition-colors"
+        >← Back Home</a
+      >
+      <span
+        class="px-2 py-1 bg-gray-200 text-xs font-bold uppercase tracking-wider rounded"
+        >Lite Plan</span
+      >
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-6 py-12">
+      <header class="mb-16">
+        <h1
+          class="text-4xl md:text-5xl font-serif font-bold mb-4 text-gray-900"
+        >
+          基础权益资源
+        </h1>
+        <p class="text-gray-500 text-lg font-light">
+          这里收录了适合入门的 AI PPT 提示词与精选模版。
+        </p>
+      </header>
+
+      <div class="space-y-6">
+        <div
+          class="group bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4"
+        >
+          <div>
+            <div class="flex items-center gap-3 mb-1">
+              <span class="text-2xl">📝</span>
+              <h3
+                class="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors"
+              >
+                通用大纲生成提示词
+              </h3>
+            </div>
+            <p class="text-gray-500 text-sm">
+              适用于 ChatGPT / Claude，一键生成结构清晰的 PPT 大纲。
+            </p>
+          </div>
+          <a
+            href="https://你的网盘或文档链接"
+            target="_blank"
+            class="px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-purple-600 transition-colors text-center shrink-0"
+          >
+            复制/下载
+          </a>
+        </div>
+
+        <div
+          class="group bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4"
+        >
+          <div>
+            <div class="flex items-center gap-3 mb-1">
+              <span class="text-2xl">🎨</span>
+              <h3
+                class="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors"
+              >
+                Midjourney 风格底图库
+              </h3>
+            </div>
+            <p class="text-gray-500 text-sm">
+              包含 50+ 张商务极简风格的高清背景图。
+            </p>
+          </div>
+          <a
+            href="#"
+            class="px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-purple-600 transition-colors text-center shrink-0"
+          >
+            获取资源
+          </a>
+        </div>
+
+        <div
+          class="group bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4"
+        >
+          <div>
+            <div class="flex items-center gap-3 mb-1">
+              <span class="text-2xl">🛠️</span>
+              <h3
+                class="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors"
+              >
+                Gamma 使用手册 (PDF)
+              </h3>
+            </div>
+            <p class="text-gray-500 text-sm">从注册到导出的保姆级图文教程。</p>
+          </div>
+          <a
+            href="#"
+            class="px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-purple-600 transition-colors text-center shrink-0"
+          >
+            在线阅读
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="mt-16 p-6 bg-purple-50 rounded-xl border border-purple-100 text-center"
+      >
+        <h4 class="font-bold text-purple-900 mb-2">想要更多？</h4>
+        <p class="text-purple-700 text-sm mb-4">
+          升级到 Pro 获取 Cursor 自动化脚本。
+        </p>
+        <button
+          class="text-xs font-bold uppercase tracking-widest text-purple-900 border-b border-purple-900 pb-0.5"
+          >查看 Pro 权益</button
+        >
+      </div>
+    </main>
+  </body>
+</html>
