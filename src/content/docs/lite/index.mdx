@@ -5,11 +5,10 @@ template: splash
 hero:
   tagline: 欢迎回来！这里是您的基础资源交付中心。
   image:
-    # ✅ 修正点：这里需要三个 '../' 才能退回到 src 目录找到 assets
+    # ✅ 必须是三个 ../ 才能退回到 src 根目录找到 assets
     file: ../../../assets/logo.svg
   actions:
     - text: 升级 Pro 获取全部权限
-      # 这里的 link 其实没问题，但为了保险起见，建议加上双引号
       link: "/#pricing"
       icon: rocket
       variant: primary
