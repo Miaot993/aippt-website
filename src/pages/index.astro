@@ -988,39 +988,74 @@ import logo from "../assets/logo.svg"; // 👈 必须添加这行，指向你刚
     </footer>
 
     <script is:inline>
-      const KEYS = { LITE: ["vip399", "demo123"], PRO: ["vip888", "admin666"] };
+  // 1. 定义密钥字典
+  const KEYS = {
+    LITE: ["vip399", "demo123"],
+    PRO: ["vip888", "admin666"]
+  };
 
-      // ... (Lite 逻辑部分)
-      function checkLiteAccess() {
-        if (!liteInput) return;
-        const val = liteInput.value.trim();
-        // 逻辑修改：Lite 密钥 -> 跳转 /lite/
-        if (KEYS.LITE.includes(val)) {
-          localStorage.setItem("user_role", "lite");
-          window.location.href = "/lite/"; // 👈 修改这里
-        } else if (KEYS.PRO.includes(val)) {
-          // 如果 Lite 入口输了 Pro 密码，直接给最高权限
-          localStorage.setItem("user_role", "pro");
-          window.location.href = "/pro/";  // 👈 修改这里
-        } else {
-          liteMsg?.classList.remove("hidden");
-          liteInput.classList.add("border-red-500");
-        }
-      }
+  // 2. 获取 DOM 元素 (确保这些 ID 在上面的 HTML 里都存在)
+  const liteInput = document.getElementById("lite-input");
+  const liteBtn = document.getElementById("lite-btn");
+  const liteMsg = document.getElementById("lite-msg"); // 错误提示文案
 
-      // ... (Pro 逻辑部分)
-      function checkProAccess() {
-        if (!proInput) return;
-        const val = proInput.value.trim();
-        if (KEYS.PRO.includes(val)) {
-          localStorage.setItem("user_role", "pro");
-          window.location.href = "/pro/"; // 👈 修改这里
-        } else {
-          proMsg?.classList.remove("hidden");
-          proInput.classList.add("border-red-500");
-        }
-      }
-      // ...
-    </script>
+  const proInput = document.getElementById("pro-input");
+  const proBtn = document.getElementById("pro-btn");
+  const proMsg = document.getElementById("pro-msg");
+
+  // 3. 定义 Lite 登录逻辑
+  function checkLiteAccess() {
+    console.log("点击了 Lite 按钮"); // 调试日志
+    if (!liteInput) return console.error("找不到 lite-input 输入框");
+    
+    const val = liteInput.value.trim();
+    
+    // 逻辑：Lite 密钥 -> 跳转 /lite/
+    if (KEYS.LITE.includes(val)) {
+      console.log("密码正确，跳转 /lite/");
+      localStorage.setItem("user_role", "lite");
+      window.location.href = "/lite/"; 
+    } else if (KEYS.PRO.includes(val)) {
+      // 输了 Pro 密码 -> 跳转 /pro/
+      localStorage.setItem("user_role", "pro");
+      window.location.href = "/pro/";  
+    } else {
+      console.log("密码错误");
+      if (liteMsg) liteMsg.classList.remove("hidden");
+      liteInput.classList.add("border-red-500");
+    }
+  }
+
+  // 4. 定义 Pro 登录逻辑
+  function checkProAccess() {
+    console.log("点击了 Pro 按钮");
+    if (!proInput) return console.error("找不到 pro-input 输入框");
+
+    const val = proInput.value.trim();
+    if (KEYS.PRO.includes(val)) {
+      localStorage.setItem("user_role", "pro");
+      window.location.href = "/pro/"; 
+    } else {
+      if (proMsg) proMsg.classList.remove("hidden");
+      proInput.classList.add("border-red-500");
+    }
+  }
+
+  // 5. 事件绑定 (这是最稳妥的方式)
+  if (liteBtn) liteBtn.addEventListener("click", checkLiteAccess);
+  if (proBtn) proBtn.addEventListener("click", checkProAccess);
+
+  // 绑定回车键 (按 Enter 也能登录)
+  if (liteInput) {
+    liteInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") checkLiteAccess();
+    });
+  }
+  if (proInput) {
+    proInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") checkProAccess();
+    });
+  }
+</script>
   </body>
 </html>
