@@ -95,7 +95,7 @@ import logo from "../assets/logo.svg"; // 👈 必须添加这行，指向你刚
             这是你的 <span
               class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500"
               >职场第二大脑</span
-            >。
+            >
           </h1>
 
           <p
@@ -990,47 +990,37 @@ import logo from "../assets/logo.svg"; // 👈 必须添加这行，指向你刚
     <script is:inline>
       const KEYS = { LITE: ["vip399", "demo123"], PRO: ["vip888", "admin666"] };
 
-      // Lite Logic
-      const liteInput = document.getElementById("lite-input");
-      const liteBtn = document.getElementById("lite-btn");
-      const liteMsg = document.getElementById("lite-msg");
+      // ... (Lite 逻辑部分)
       function checkLiteAccess() {
         if (!liteInput) return;
         const val = liteInput.value.trim();
-        if (KEYS.LITE.includes(val) || KEYS.PRO.includes(val)) {
+        // 逻辑修改：Lite 密钥 -> 跳转 /lite/
+        if (KEYS.LITE.includes(val)) {
           localStorage.setItem("user_role", "lite");
-          window.location.href = "/guides/basics/start";
+          window.location.href = "/lite/"; // 👈 修改这里
+        } else if (KEYS.PRO.includes(val)) {
+          // 如果 Lite 入口输了 Pro 密码，直接给最高权限
+          localStorage.setItem("user_role", "pro");
+          window.location.href = "/pro/";  // 👈 修改这里
         } else {
           liteMsg?.classList.remove("hidden");
           liteInput.classList.add("border-red-500");
         }
       }
-      liteBtn?.addEventListener("click", checkLiteAccess);
-      liteInput?.addEventListener(
-        "keypress",
-        (e) => e.key === "Enter" && checkLiteAccess(),
-      );
 
-      // Pro Logic
-      const proInput = document.getElementById("pro-input");
-      const proBtn = document.getElementById("pro-btn");
-      const proMsg = document.getElementById("pro-msg");
+      // ... (Pro 逻辑部分)
       function checkProAccess() {
         if (!proInput) return;
         const val = proInput.value.trim();
         if (KEYS.PRO.includes(val)) {
           localStorage.setItem("user_role", "pro");
-          window.location.href = "/guides/pro/cursor-magic";
+          window.location.href = "/pro/"; // 👈 修改这里
         } else {
           proMsg?.classList.remove("hidden");
           proInput.classList.add("border-red-500");
         }
       }
-      proBtn?.addEventListener("click", checkProAccess);
-      proInput?.addEventListener(
-        "keypress",
-        (e) => e.key === "Enter" && checkProAccess(),
-      );
+      // ...
     </script>
   </body>
 </html>

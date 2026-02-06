@@ -45,16 +45,19 @@ export default defineConfig({
       // 侧边栏菜单 (保留你之前的配置)
       sidebar: [
         {
-          label: '🌱 入门指南',
+          label: '🌟 Lite 权益区',
+          // 自动抓取 lite 文件夹下的所有内容
+          autogenerate: { directory: 'lite' },
+        },
+        {
+          label: '💎 Pro 核心资产',
+          // 自动抓取 pro 文件夹下的所有内容
+          autogenerate: { directory: 'pro' },
+        },
+        // 之前的通用教程可以保留，或者归类到上面两个里面
+        {
+          label: '📚 公共教程库',
           autogenerate: { directory: 'guides/basics' },
-        },
-        {
-          label: '🛠️ 工具实战',
-          autogenerate: { directory: 'guides/skills' },
-        },
-        {
-          label: '💎 Pro 黑科技',
-          autogenerate: { directory: 'guides/pro' },
         },
       ],
     }),
