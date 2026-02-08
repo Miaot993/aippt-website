@@ -4,28 +4,93 @@ import tailwindcss from '@tailwindcss/vite';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
+  // 1. Vite 插件配置
   vite: {
     plugins: [tailwindcss()],
   },
+
   integrations: [
     starlight({
       title: 'AI&PPT 第二大脑',
-      // 2. 引入刚才创建的 Logo 图片
+
+      // 2. Logo 配置
       logo: {
         src: './src/assets/logo.svg',
-        replacesTitle: false, // false = 显示图标+文字；true = 只显示图标
+        replacesTitle: false,
       },
 
-      // 防止 undefined 报错的兜底
-      head: [],
-
-      // ✅ 核心修复：在这里注入 Tailwind 的样式文件
-      // 这样文档页里的 ThemeToggle 组件才能读懂 hidden/block/dark 等类名
+      // 3. 样式注入
       customCss: [
         './src/styles/global.css',
       ],
 
-      // 社交链接
+      // 4. 组件覆盖
+      components: {
+        ThemeSelect: './src/components/ThemeToggle.astro',
+        Head: './src/components/Head.astro',
+      },
+
+      // 兜底配置
+      head: [],
+
+      // ================================================
+      // 🚀 5. 侧边栏核心逻辑 (已修复结构)
+      // ================================================
+      sidebar: [
+        // --- 第一层：lite 指挥中心 (Dashboard 入口) ---
+        {
+          label: 'Lite 权益区',
+          link: '/lite',
+          badge: { text: '合集', variant: 'tip' },
+        },
+        // --- 第二层：lite 知识库 (展开的干货区) ---
+        {
+          label: '基础资产库',
+          collapsed: false, // 默认展开
+          items: [
+            {
+              label: '下载资源',
+              collapsed: true,
+              autogenerate: { directory: 'lite/xiazai' },
+            },
+          ],
+        },
+
+        // --- 第一层：Pro 指挥中心 (Dashboard 入口) ---
+        {
+          label: 'Pro 指挥中心',
+          link: '/pro',
+          badge: { text: '合集', variant: 'tip' },
+        },
+
+        // --- 第二层：Pro 知识库 (展开的干货区) ---
+        {
+          label: '核心资产库',
+          collapsed: false, // 默认展开
+          items: [
+            {
+              label: '环境部署',
+              collapsed: true,
+              autogenerate: { directory: 'pro/anzhuang' },
+            },
+            {
+              label: '实战教程',
+              collapsed: true,
+              autogenerate: { directory: 'pro/jiaocheng' },
+            },
+            {
+              label: '核心原理',
+              collapsed: true,
+              autogenerate: { directory: 'pro/yuanli' },
+            },
+          ],
+        },
+      ],
+      // 👆 sidebar 数组在这里结束
+
+      // ================================================
+      // 社交链接 (放在这里才是正确的，在 starlight 配置对象内部)
+      // ================================================
       // social: [
       //   {
       //     label: 'GitHub',
@@ -34,32 +99,6 @@ export default defineConfig({
       //   },
       // ],
 
-      // ✅ 新增的核心配置：覆盖默认的主题选择器
-      // 这会把 Starlight 右上角的下拉框替换成我们刚才写的图标按钮
-      components: {
-        ThemeSelect: './src/components/ThemeToggle.astro',
-        // ✅ 新增这一行：接管 Head 区域
-        Head: './src/components/Head.astro',
-      },
-
-      // 侧边栏菜单 (保留你之前的配置)
-      sidebar: [
-        {
-          label: '🌟 Lite 权益区',
-          // 自动抓取 lite 文件夹下的所有内容
-          autogenerate: { directory: 'lite' },
-        },
-        {
-          label: '💎 Pro 核心资产',
-          // 自动抓取 pro 文件夹下的所有内容
-          autogenerate: { directory: 'pro' },
-        },
-        // 之前的通用教程可以保留，或者归类到上面两个里面
-        {
-          label: '📚 公共教程库',
-          autogenerate: { directory: 'guides/basics' },
-        },
-      ],
-    }),
-  ],
-});
+    }), // 👈 starlight 函数在这里结束
+  ], // 👈 integrations 数组在这里结束
+}); // 👈 defineConfig 在这里结束
