@@ -1,0 +1,29 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+const { title, description, href, date, tag = "Article" } = Astro.props;
+---
+
+<a href={href} class="group flex flex-col gap-2 p-8 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl hover:border-gray-300 dark:hover:border-zinc-700 transition-colors no-underline h-full overflow-hidden hover:shadow-md">
+  
+  <div class="flex items-center justify-between">
+    <span class="px-3 py-1 text-xs font-semibold tracking-wide text-gray-400 bg-gray-50 dark:bg-zinc-800 dark:text-zinc-600 rounded-full">
+      {tag}
+    </span>
+    {date && <span class="text-sm text-gray-400">{date}</span>}
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <h4 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 leading-snug">
+      {title}
+    </h4>
+    <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
+      {description}
+    </p>
+  </div>
+
+  <div class="mt-auto flex items-center text-sm font-medium text-gray-400 transition-colors">
+    Read more <Icon name="right-arrow" class="w-4 h-4 ml-2" />
+  </div>
+  
+</a>

@@ -5,11 +5,9 @@ template: splash
 # ✅ 新增下面这两行，隐藏底部翻页按钮
 prev: false
 next: false
-
 hero:
   tagline: 欢迎，超级个体。这是您的全套数字军火库。
   image:
-    # ✅ 同样改成三个 ../
     file: ../../../assets/logo.svg
   actions:
     - text: 加入知识星球
@@ -22,39 +20,69 @@ hero:
       variant: secondary
 ---
 
-import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { Icon } from '@astrojs/starlight/components';
 
-## ⚡️ 核心工作流 (SOP)
+{/* 👇 1. 组件引用 (路径已修正为 3 个 ../) */}
+import ResourceCard from '../../../components/ResourceCard.astro';
+import FeaturedCard from '../../../components/FeaturedCard.astro';
 
-<CardGrid>
-  <LinkCard
-    title="🧠 Claude 商业叙事逻辑"
-    description="复制即用的 System Prompt，生成麦肯锡级大纲。"
-    href="/guides/pro/claude-logic"
-  />
-  <LinkCard
-    title="🎨 MJ + Gamma 视觉流"
-    description="从生图到排版的保姆级操作手册。"
-    href="/guides/pro/visual-flow"
-  />
-</CardGrid>
+{/* 👇 2. 图片引用 (确保这个文件存在) */}
+import coverImg1 from './jiaocheng/banner.png';
 
-## 💎 独家资产库
+{/* 👇 3. 核心数据抓取逻辑 (必须放在这里，且前面加上 export const) */}
+export const proPosts = (await getCollection('docs'))
+  .filter(post => post.id.startsWith('pro/') && !post.id.endsWith('index.mdx'))
+  .sort((a, b) => {
+    const dateA = new Date(a.data.date || '2000-01-01');
+    const dateB = new Date(b.data.date || '2000-01-01');
+    return dateB.valueOf() - dateA.valueOf(); // 倒序
+  });
 
-<CardGrid>
-  <LinkCard
-    title="💾 原理"
-    description="商业计划书、发布会、路演 PPT 源文件合集。"
-    href="/pro/yuanli"
-  />
-  <LinkCard
-    title="🧬 安装"
-    description="解决 AI 画图风格不统一的终极杀器。"
-    href="/pro/anzhuang"
-  />
-  <LinkCard
-    title="🤖 教程"
-    description="一键生成着陆页的 Cursor 提示词库。"
-    href="/pro/jiaocheng/cursor-magic"
-  />
-</CardGrid>
+<div class="not-content">
+
+  {/* ================= SECTION 1: Featured (精选大卡片) ================= */}
+  <h2 class="text-2xl font-bold mb-12 text-gray-900 dark:text-white">Featured Projects</h2>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+  
+    {/* 精选卡片 1 */}
+    <FeaturedCard
+      title="Claude 商业叙事逻辑 SOP"
+      description="不要再让 AI 写车轱辘话。掌握麦肯锡顾问的思考框架，一键生成高质量大纲。"
+      href="/guides/pro/claude-logic"
+      image={coverImg1}
+      tag="SOP"
+    />
+
+    {/* 精选卡片 2 */}
+    <FeaturedCard
+      title="MJ + Gamma 视觉流"
+      description="从 Midjourney 生图到 Gamma 排版，解决风格不统一的终极杀器。"
+      href="/guides/pro/visual-flow"
+      image={coverImg1}
+      tag="Design"
+    />
+
+  </div>
+
+
+  {/* ================= SECTION 2: All Resources (自动生成版) ================= */}
+  {/* 👇 现在这里就能读到 proPosts 了，因为它是在顶楼定义的 */}
+  <h2 class="text-2xl font-bold mb-12 text-gray-900 dark:text-white">All Resources ({proPosts.length})</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-6">
+    {
+      proPosts.map((post) => (
+        <ResourceCard 
+          title={post.data.title}
+          description={post.data.description}
+          href={`/${post.slug}`} 
+          date={post.data.date ? new Date(post.data.date).toLocaleDateString() : ''}
+          tag="Guide" 
+        />
+      ))
+    }
+  </div>
+</div>

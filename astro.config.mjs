@@ -41,7 +41,7 @@ export default defineConfig({
         {
           label: 'Lite 权益区',
           link: '/lite',
-          badge: { text: '合集', variant: 'tip' },
+          badge: { text: '总览', variant: 'tip' },
         },
         // --- 第二层：lite 知识库 (展开的干货区) ---
         {
@@ -60,7 +60,7 @@ export default defineConfig({
         {
           label: 'Pro 指挥中心',
           link: '/pro',
-          badge: { text: '合集', variant: 'tip' },
+          badge: { text: '总览', variant: 'tip' },
         },
 
         // --- 第二层：Pro 知识库 (展开的干货区) ---

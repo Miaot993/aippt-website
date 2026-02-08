@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from '@astrojs/starlight/components';
+
+// 接收图片 prop (image)
+const { title, description, href, image, tag = "Featured" } = Astro.props;
+---
+
+<a href={href} class="group flex flex-col bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl hover:border-gray-300 dark:hover:border-zinc-700 transition-all duration-300 no-underline h-full overflow-hidden hover:shadow-xl">
+  
+  <div class="h-48 overflow-hidden bg-gray-100 dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-800/50">
+    <Image 
+      src={image} 
+      alt={title} 
+      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+    />
+  </div>
+
+  <div class="flex flex-col gap-2 p-8 pt-6 flex-1">
+    
+    <div class="flex items-center justify-between">
+      <span class="px-3 py-1 text-xs font-semibold tracking-wide text-gray-400 bg-gray-50 dark:bg-zinc-800 dark:text-zinc-600 rounded-full">
+        {tag}
+      </span>
+    </div>
+
+    <div class="flex flex-col gap-2 mt-2">
+      <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 leading-snug">
+        {title}
+      </h3>
+      <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
+        {description}
+      </p>
+    </div>
+
+    <div class="mt-auto flex items-center text-sm font-medium text-gray-400 transition-colors pt-2">
+      Read more <Icon name="right-arrow" class="w-4 h-4 ml-2" />
+    </div>
+
+  </div>
+</a>
