@@ -1,0 +1,136 @@
+---
+title: Stable Diffusion-基本介绍
+description: 麦肯锡级咨询顾问的思考框架
+label: 实战教程 # 👈 这里写你想显示的中文
+order: 3 # 👈 这里决定它排第几（数字越小越靠前）
+sidebar:
+  badge:
+    text: Pro Only
+    variant: tip
+---
+
+import { Image } from "astro:assets";
+import bannerImg from "./images-01/banner.png";
+
+<Image
+  src={bannerImg}
+  alt="Claude SOP 封面"
+  class="w-full h-auto rounded-xl shadow-lg border border-white/10 mb-8"
+/>
+
+:::tip[高阶技巧]
+本教程需要您拥有 Claude 3.5 Sonnet 账号配合使用。
+:::
+
+# Stable Diffusion-基本介绍
+
+# 1.公司介绍
+
+相比较于DALL-E等大模型，Stable Diffusion让用户使用消费级的显卡便能够迅速实现文生图。Stable Diffusion完全免费开源，所有代码均在[GitHub](https://github.com/)上公开，大家可以拷贝使用。
+
+**创始人**
+
+Stable Diffusion模型第一个版本训练耗资60万美元，而提供资金支持正是Stability AI。该公司成立于2020年，最初资金都来自创始人兼CEO Emad Mostaque。
+
+StabilityAI公司 创始人 Emad Mostaque
+
+# 2.产品介绍
+
+## 对比优势
+
+Midjourney和Stable Diffusion都是数字图像处理中的两种算法，用于实现平滑和去噪等操作，但它们的具体实现方式和效果有所不同。
+
+### **首先在算法上：**
+
+Stable diffusion是一种非常常见的图像平滑算法，可以使图像变得更加平滑，同时保持边缘和细节。它基于偏微分方程，通过计算图像的梯度来控制图像中的信息流，从而减少噪声并平滑图像。与其他平滑算法相比，stable diffusion具有更好的平滑效果，不会破坏边缘和细节。
+
+Midjourney算法是一种基于双边滤波技术的去噪算法，它能够去除图像中的高频噪声并保留图像的细节和边缘，同时保持图像的平滑。这个算法通常会在图像处理的后期阶段应用，以进一步去除图像中的噪声并平滑图像。
+
+![image.png](./images-01/image%201.png)
+
+### **举个例子：**
+
+当我们处理数字图像时，可能会遇到需要平滑或去噪的问题。以下是使用Midjourney算法和Stable Diffusion算法处理同一幅图像的示例：
+
+假设我们有一张数字图像，其中包含一些噪声和不规则的边缘。我们首先可以使用Stable Diffusion算法对图像进行平滑处理，以去除一些噪声和平滑边缘。该算法可以帮助我们保留图像的细节和边缘，同时减少噪声，从而得到更清晰的图像。接下来，我们可以使用Midjourney算法对图像进行进一步的去噪处理，以去除剩余的高频噪声，使图像更加平滑和清晰。
+
+具体来说，Stable Diffusion算法可以对图像进行平滑处理，使其变得更加平滑，同时保留图像的边缘和细节，从而减少噪声。它通常在图像处理的早期阶段应用，以减少高频噪声，并保留图像的细节和边缘。例如，在图像的边缘处，Stable Diffusion算法会保留边缘的锐利度，而不会让边缘变得模糊。
+¡
+另一方面，Midjourney算法可以对图像进行进一步的去噪处理，以去除高频噪声，同时保留图像的细节和边缘。它通常在图像处理的后期阶段应用，以进一步去除噪声和平滑图像。例如，在图像中的小细节处，Midjourney算法会保留细节的清晰度，而不会将其平滑成一片。
+
+因此，尽管两种算法都可以用于数字图像处理中的平滑和去噪等操作，但它们的应用顺序和处理效果不同。
+
+### **怎么用：**
+
+1.首先，使用Stable Diffusion算法对输入的数字图像进行平滑处理。该算法可以帮助我们去除图像中的噪声和不规则边缘，同时保留图像的细节和边缘。
+
+2.接下来，使用Midjourney算法对处理后的图像进行进一步的去噪处理。该算法可以帮助我们进一步减少图像中的噪声，同时保持图像的平滑和细节。
+
+3.如果处理后的图像仍然存在一些不够满意的细节和噪声，可以考虑再次使用Stable Diffusion算法进行平滑处理，以进一步去除噪声并保留图像的细节。
+
+4.在使用Midjourney和Stable Diffusion算法时，还可以通过调整算法参数来获得更好的处理效果。例如，可以调整算法的滤波器大小、平滑程度等参数，以达到最佳的平滑和去噪效果。
+
+# 公司其它产品
+
+## **1.[StabilityAI](https://stability.ai/)**
+
+一家专注于人工智能技术的创新公司，最近推出了一款全新的开源图像生成模型DeepFloyd IF。 该模型基于深度学习技术，能够生成高质量的图像，并且具有良好的可控性和稳定性，为图像生成领域带来了新的突破。
+
+![image.png](./images-01/image%202.png)
+
+## **2.[Harmonai](https://www.harmonai.org/)**
+
+Harmonai是一个社区组织，致力于为制作人和音乐家开发开源的音频生成工具。该组织创建了一系列音频生成机器学习模型，这些模型是Stability AI的一部分。
+
+![image.png](./images-01/image%203.png)
+
+## 3.[CarperAI](https://carper.ai/)
+
+EleutherAI研究小组的一个新实验室，其任务是“通过强化学习提高大型语言模型(LLM) 的性能和安全性。” CarperAI 开源了Transformer Reinforcement Learning X (trlX)，这是一个使用RLHF 微调HuggingFace 语言模型的框架。
+
+![image.png](./images-01/image%204.png)
+
+## 4.[OpenBioML](https://www.openbioml.org/)
+
+一个去中心化的研究社区，旨在将机器学习和生物学相结合，推动科学研究的民主化。OpenBioML的使命是通过开放的合作和知识共享，让更多的人参与到科学研究中来，促进科学的进步和创新。相信在不久的将来民主化的科学研究将为人类的未来带来更多的希望和可能性。
+
+![image.png](./images-01/image%205.png)
+
+## 5.[MedARC](https://www.medarc.ai/)
+
+一种新颖，开放和协作的医学AI研究方法。
+
+![image.png](./images-01/image%206.png)
+
+## 6.[DeepFloyd](https://deepfloyd.ai/)
+
+最新最先进的开源文本-图像模型，拥有强大的语言理解能力，生成的图像具有高度真实感。
+
+![image.png](./images-01/image%207.png)
+
+## 7.[ClipDrop](https://clipdrop.co/)
+
+一个应用程序套件，可帮助您使用AI 轻松修改图像。
+
+![image.png](./images-01/image%208.png)
+
+# 技术原理
+
+Stable Diffusion核心技术来源于AI视频剪辑技术创业公司Runway的Patrick Esser，以及慕尼黑大学机器视觉学习组的Robin Romabach。该项目的技术基础主要来自于这两位开发者之前在计算机视觉大会CVPR22上合作发表的潜扩散模型（Latent Diffusion Model）研究。
+
+Stable diffusion是一种基于潜在扩散模型（Latent Diffusion Models）的文本到图像生成模型，能够根据任意文本输入生成高质量、高分辨率、高逼真的图像。
+
+## **Stable diffusion的原理可以分为以下几个步骤：**
+
+1. stable diffusion使用一个新颖的文本编码器（OpenCLIP），由LAION开发并得到Stability AI的支持，将文本输入转换为一个向量表示。这个向量表示可以捕捉文本的语义信息，并与图像空间对齐。
+2. stable diffusion使用一个扩散模型（Diffusion Model），将一个随机噪声图像逐渐变换为目标图像。扩散模型是一种生成模型，可以从训练数据中学习出一个概率分布，并从中采样出新的数据。
+3. 在扩散过程中，stable diffusion利用文本向量和噪声图像作为条件输入，给出每一步变换的概率分布。这样，stable diffusion可以根据文本指导噪声图像向目标图像收敛，并保持图像的清晰度和连贯性。
+4. 最后，stable diffusion使用一个超分辨率放大器（Upscaler Diffusion Model），将生成的低分辨率图像放大到更高的分辨率。超分辨率放大器也是一个扩散模型，可以从低分辨率图像中恢复出细节信息，并增强图像质量。
+
+**通过以上步骤，Stable diffusion可以实现从文本到图像的生成，并且具有以下优点：**
+
+- stable diffusion可以处理任意领域和主题的文本输入，并生成与之相符合的多样化和富有创意的图像。
+- stable diffusion可以生成高达2048x2048或更高的分辨率的图像，并且保持了良好的视觉效果和真实感。
+- stable diffusion还可以进行深度引导（Depth-guided）和结构保留（Structure-preserving）的图像转换和合成。例如，它可以根据输入图片推断出深度信息，并利用深度信息和文本条件生成新图片。
+
+Stable diffusion是一种强大的文本到图像生成模型，它利用了潜在扩散模型、OpenCLIP编码器、超分辨率放大器等技术。

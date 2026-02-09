@@ -58,18 +58,18 @@ export default defineConfig({
 
         // --- 第一层：Pro 指挥中心 (Dashboard 入口) ---
         {
-          label: 'Pro 指挥中心',
+          label: 'Pro 权益区',
           link: '/pro',
           badge: { text: '总览', variant: 'tip' },
         },
 
         // --- 第二层：Pro 知识库 (展开的干货区) ---
         {
-          label: '核心资产库',
+          label: 'Stable Diffusion',
           collapsed: false, // 默认展开
           items: [
             {
-              label: '环境部署',
+              label: '介绍',
               collapsed: true,
               autogenerate: { directory: 'pro/anzhuang' },
             },
