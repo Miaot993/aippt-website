@@ -1,0 +1,64 @@
+---
+title: 全站资源索引
+description: Pro Max 会员专属的完整知识库清单
+template: splash
+prev: false
+next: false
+sidebar:
+  order: 999 
+  label: "📚 全部资源索引"
+---
+
+import { getCollection } from 'astro:content';
+import { Icon } from '@astrojs/starlight/components';
+import ResourceCard from '../../../../components/ResourceCard.astro';
+
+export const allPosts = (await getCollection('docs'))
+  .filter(post => {
+    return post.id.startsWith('pro/') && 
+           !post.id.endsWith('pro/index.mdx') && 
+           !post.id.includes('/ALL/index.mdx');
+  })
+  .sort((a, b) => {
+    return new Date(b.data.date || 0) - new Date(a.data.date || 0);
+  });
+
+{/* ✨ 使用 .not-content 作为“信物”
+  我们在 global.css 里写了逻辑：凡是包着 .not-content 的容器，统统强制全宽！
+*/}
+<div class="not-content">
+  <div class="w-full max-w-7xl mx-auto px-6 lg:px-8 mt-8">
+
+    {/* 头部信息区 */}
+    <div class="flex flex-col items-start gap-4 mb-12">
+      <a href="/pro" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors no-underline shadow-sm">
+        <Icon name="left-arrow" class="w-4 h-4" />
+        返回 Pro 指挥中心
+      </a>
+
+      <div class="max-w-3xl">
+        <p class="text-lg text-zinc-600 dark:text-zinc-300 leading-relaxed m-0">
+          当前资料库共收录 <span class="font-bold text-indigo-600 dark:text-indigo-400 px-1">{allPosts.length}</span> 篇高阶资源。
+          <br class="hidden sm:block" />
+          您可以随时使用 <kbd class="font-mono bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-sm border border-zinc-200 dark:border-zinc-700 mx-1">Cmd + K</kbd> 唤起全局搜索，或在下方按更新时间浏览。
+        </p>
+      </div>
+    </div>
+
+    {/* 卡片列表 */}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-24">
+      {
+        allPosts.map((post) => (
+          <ResourceCard 
+            title={post.data.title}
+            description={post.data.description}
+            href={`/${post.slug}`} 
+            date={post.data.date ? new Date(post.data.date).toLocaleDateString() : ''}
+            tag="资源" 
+          />
+        ))
+      }
+    </div>
+
+  </div>
+</div>

@@ -161,3 +161,35 @@ header.header {
     border-inline-end: 1px solid var(--sl-color-hairline) !important;
   }
 }
+
+/* ==========================================================================
+   7. Splash 页面布局强制修复 (The Jailbreak)
+   🔴 必须加这段！否则 Pro 首页和资源索引页无法全宽对齐
+   ========================================================================== 
+*/
+
+/* 1. 强制 Splash 页面的主容器占满 100% 宽度 */
+[data-template="splash"] .sl-container {
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important; /* 关键：去掉默认的左右内边距 */
+  padding-right: 0 !important;
+}
+
+/* 2. 强制内容区域也不要限制宽度 */
+[data-template="splash"] .sl-markdown-content {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* 3. 确保我们的 .not-content 能够自由呼吸 */
+[data-template="splash"] .not-content {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* 4. 修复 Hero 区域可能出现的左对齐问题 */
+[data-template="splash"] .hero {
+  margin: 0 auto !important;
+}
