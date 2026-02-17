@@ -46,8 +46,8 @@ html:not([data-user-role="pro"]) a[href*="/pro/"] {
 :root[data-theme='dark'] {
   /* 1. 背景色：改为与首页一致的 Zinc-950 (#09090b) */
   --sl-color-bg: #16161a;
-  --sl-color-bg-nav: #111114;
-  --sl-color-bg-sidebar: #212127;
+  --sl-color-bg-nav: #16161a;
+  --sl-color-bg-sidebar: #16161a;
 
   /* 2. 选中文字/链接颜色：改为纯白 */
   --sl-color-text-accent: #ffffff;
@@ -108,17 +108,56 @@ html:not([data-user-role="pro"]) a[href*="/pro/"] {
   --sl-color-bg-nav: rgba(255, 255, 255, 0.75) !important;
 }
 
-/* 3. 给导航栏元素添加“磨砂玻璃”滤镜 */
-header.header {
-  /* 关键代码：背景模糊 */
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px); /* 兼容 Safari */
-
-  /* 增加一条极细的底部边框，增加层次感 (类似首页的分割线) */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
 /* 4. 优化侧边栏 (Sidebar) 顶部，防止它遮挡毛玻璃效果 */
 .sidebar-content {
     /* 让侧边栏内容稍微往下一点，或者背景也跟随调整，通常不需要改，但以防万一 */
+}
+
+/* =========================================
+   🎨 Starlight 核心视觉重构 (System Level)
+   ========================================= */
+
+/* 1. 全局定义分割线颜色变量 (Hairline System) */
+:root {
+  /* 浅色模式下的分割线颜色 (Zinc-200) */
+  --sl-color-hairline-light: #e4e4e7;
+  /* 深色模式下的分割线颜色 (Zinc-800) - 这是一个能明显看出的深灰色 */
+  --sl-color-hairline-dark: #27272a; 
+}
+
+/* 2. 深色模式主题配置 (Dark Mode Theme) */
+:root[data-theme='dark'] {
+  /* 背景三位一体：全部统一为深邃黑 (#16161a) */
+  --sl-color-bg: #16161a;
+  --sl-color-bg-nav: #16161a;
+  --sl-color-bg-sidebar: #202024;
+
+  /* 关键：将系统分割线变量映射为我们定义的深色线条 */
+  --sl-color-hairline: var(--sl-color-hairline-dark);
+}
+
+/* 3. 浅色模式主题配置 (Light Mode Theme) */
+:root[data-theme='light'] {
+  /* 关键：将系统分割线变量映射为我们定义的浅色线条 */
+  --sl-color-hairline: var(--sl-color-hairline-light);
+}
+
+/* =========================================
+   📐 结构扁平化修正 (Structure Flattening)
+   目的：移除 Starlight 默认的阴影，改用系统分割线，实现 Pixel-Perfect 对齐
+   ========================================= */
+
+/* 顶部导航栏：移除阴影，使用统一的底部边框 */
+header.header {
+  box-shadow: none !important; /* 去掉阴影 */
+  border-bottom: 1px solid var(--sl-color-hairline) !important; /* 加一条线 */
+  backdrop-filter: blur(16px); /* 保持毛玻璃 */
+}
+
+/* 侧边栏：在桌面端使用统一的右侧边框 */
+@media (min-width: 50rem) {
+  .sidebar {
+    /* 使用 border-inline-end 是更现代的写法，等同于 border-right */
+    border-inline-end: 1px solid var(--sl-color-hairline) !important;
+  }
 }
