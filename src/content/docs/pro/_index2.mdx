@@ -1,0 +1,98 @@
+---
+title: Pro Max 指挥中心
+description: 全栈工作流与核心资产库
+template: splash
+prev: false
+next: false
+# 👇 1. 回归官方 Hero 配置 (Starlight 会自动帮我们处理响应式和对齐)
+hero:
+  title: Pro Max 指挥中心
+  tagline: 欢迎，超级个体。这是您的全套数字军火库。
+  image:
+    file: ../../../assets/logo.svg
+  actions:
+    - text: 加入知识星球
+      link: https://zsxq.com/你的链接
+      icon: discord
+      variant: primary
+    - text: 查看最新更新
+      link: "#changelog"
+      icon: open-book
+      variant: secondary
+---
+
+import { getCollection } from 'astro:content';
+import ResourceCard from '../../../components/ResourceCard.astro';
+import FeaturedCard from '../../../components/FeaturedCard.astro';
+import coverImg1 from './jiaocheng/banner.png';
+
+export const proPosts = (await getCollection('docs'))
+  .filter(post => post.id.startsWith('pro/') && !post.id.endsWith('index.mdx'))
+  .sort((a, b) => {
+    const dateA = a.data.date ? new Date(a.data.date).valueOf() : 0;
+    const dateB = b.data.date ? new Date(b.data.date).valueOf() : 0;
+    return dateB - dateA;
+  });
+
+export const featuredPosts = proPosts.filter(post => post.data.featured === true);
+
+{/* ================================================================
+  🎨 内容区域
+  使用了 not-content 来打破默认排版，但配合官方 Hero，
+  我们只需要关注卡片容器即可。
+  ================================================================
+*/}
+
+<div class="not-content">
+  <div class="w-full max-w-7xl mx-auto px-6 lg:px-8">
+
+    {/* 核心资源 */}
+    <h2 class="text-2xl font-bold mb-6 text-zinc-900 dark:text-white flex items-center gap-3">
+      <span class="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
+      核心资源
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+      <FeaturedCard
+        title="Claude 商业叙事逻辑 SOP"
+        description="不要再让 AI 写车轱辘话。掌握麦肯锡顾问的思考框架。"
+        href="/guides/pro/claude-logic"
+        image={coverImg1}
+        tag="SOP"
+      />
+      <FeaturedCard
+        title="MJ + Gamma 视觉流"
+        description="从 Midjourney 生图到 Gamma 排版，解决风格不统一的终极杀器。"
+        href="/guides/pro/visual-flow"
+        image={coverImg1}
+        tag="Design"
+      />
+    </div>
+
+    {/* 全部资源 */}
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-3">
+        <span class="w-1.5 h-6 bg-purple-500 rounded-full"></span>
+        全部资源 
+        <span class="text-sm font-normal text-zinc-400 ml-1">({proPosts.length})</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        proPosts.map((post) => (
+          <ResourceCard 
+            title={post.data.title}
+            description={post.data.description}
+            href={`/${post.slug}`} 
+            date={post.data.date ? new Date(post.data.date).toLocaleDateString() : ''}
+            tag="Guide" 
+          />
+        ))
+      }
+    </div>
+    
+    <div class="h-32 w-full"></div>
+
+  </div>
+</div>

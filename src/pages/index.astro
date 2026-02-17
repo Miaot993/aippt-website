@@ -987,75 +987,116 @@ import logo from "../assets/logo.svg"; // 👈 必须添加这行，指向你刚
       <p>Copyright © youzhaPPT</p>
     </footer>
 
-    <script is:inline>
-  // 1. 定义密钥字典
-  const KEYS = {
-    LITE: ["vip399", "demo123"],
-    PRO: ["vip888", "admin666"]
-  };
+  <script is:inline>
+  // 使用立即执行函数 (IIFE) 避免污染全局变量
+  (function() {
+    // 1. 定义密钥字典 (注意：前端硬编码密码仅做简单防护)
+    const KEYS = {
+      LITE: ["vip399", "demo123"],
+      PRO: ["vip888", "admin666"]
+    };
 
-  // 2. 获取 DOM 元素 (确保这些 ID 在上面的 HTML 里都存在)
-  const liteInput = document.getElementById("lite-input");
-  const liteBtn = document.getElementById("lite-btn");
-  const liteMsg = document.getElementById("lite-msg"); // 错误提示文案
+    // 2. 封装登录逻辑
+    function handleLogin(type) {
+      const inputId = type === 'lite' ? 'lite-input' : 'pro-input';
+      const msgId = type === 'lite' ? 'lite-msg' : 'pro-msg';
+      
+      const inputEl = document.getElementById(inputId);
+      const msgEl = document.getElementById(msgId);
+      
+      if (!inputEl) return;
+      
+      const val = inputEl.value.trim();
+      
+      // 清除错误状态
+      inputEl.classList.remove('border-red-500', 'ring-2', 'ring-red-500');
+      if (msgEl) msgEl.classList.add('hidden');
 
-  const proInput = document.getElementById("pro-input");
-  const proBtn = document.getElementById("pro-btn");
-  const proMsg = document.getElementById("pro-msg");
+      // 核心验证逻辑
+      let targetRole = null;
+      let targetUrl = '';
 
-  // 3. 定义 Lite 登录逻辑
-  function checkLiteAccess() {
-    console.log("点击了 Lite 按钮"); // 调试日志
-    if (!liteInput) return console.error("找不到 lite-input 输入框");
-    
-    const val = liteInput.value.trim();
-    
-    // 逻辑：Lite 密钥 -> 跳转 /lite/
-    if (KEYS.LITE.includes(val)) {
-      console.log("密码正确，跳转 /lite/");
-      localStorage.setItem("user_role", "lite");
-      window.location.href = "/lite/"; 
-    } else if (KEYS.PRO.includes(val)) {
-      // 输了 Pro 密码 -> 跳转 /pro/
-      localStorage.setItem("user_role", "pro");
-      window.location.href = "/pro/";  
-    } else {
-      console.log("密码错误");
-      if (liteMsg) liteMsg.classList.remove("hidden");
-      liteInput.classList.add("border-red-500");
+      if (type === 'lite') {
+        // Lite 入口：既能输 Lite 码，也能输 Pro 码
+        if (KEYS.LITE.includes(val)) {
+          targetRole = 'lite';
+          targetUrl = '/lite/';
+        } else if (KEYS.PRO.includes(val)) {
+          targetRole = 'pro';
+          targetUrl = '/pro/';
+        }
+      } else {
+        // Pro 入口：只能输 Pro 码
+        if (KEYS.PRO.includes(val)) {
+          targetRole = 'pro';
+          targetUrl = '/pro/';
+        }
+      }
+
+      // 跳转处理
+      if (targetRole) {
+        // 存储用户身份到本地 (用于后续页面鉴权)
+        localStorage.setItem('user_role', targetRole);
+        localStorage.setItem('access_token', val); // 可选：存一下密钥备查
+        
+        // 增加一点交互反馈
+        inputEl.classList.add('border-green-500', 'text-green-600');
+        if (msgEl) {
+          msgEl.textContent = '验证成功，正在跳转...';
+          msgEl.classList.remove('text-red-400', 'hidden');
+          msgEl.classList.add('text-green-500');
+        }
+        
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 500); // 延迟 0.5秒 让用户看到成功状态
+      } else {
+        // 失败处理
+        inputEl.classList.add('border-red-500', 'ring-2', 'ring-red-500/20');
+        // 震动动画
+        inputEl.style.animation = 'shake 0.5s';
+        setTimeout(() => inputEl.style.animation = '', 500);
+        
+        if (msgEl) {
+          msgEl.textContent = '密钥无效，请核对后重试';
+          msgEl.classList.remove('hidden');
+        }
+      }
     }
-  }
 
-  // 4. 定义 Pro 登录逻辑
-  function checkProAccess() {
-    console.log("点击了 Pro 按钮");
-    if (!proInput) return console.error("找不到 pro-input 输入框");
+    // 3. 事件绑定 (等待 DOM 加载)
+    document.addEventListener('DOMContentLoaded', () => {
+      const liteBtn = document.getElementById('lite-btn');
+      const proBtn = document.getElementById('pro-btn');
+      const liteInput = document.getElementById('lite-input');
+      const proInput = document.getElementById('pro-input');
 
-    const val = proInput.value.trim();
-    if (KEYS.PRO.includes(val)) {
-      localStorage.setItem("user_role", "pro");
-      window.location.href = "/pro/"; 
-    } else {
-      if (proMsg) proMsg.classList.remove("hidden");
-      proInput.classList.add("border-red-500");
-    }
-  }
+      // 绑定点击事件
+      if (liteBtn) liteBtn.addEventListener('click', () => handleLogin('lite'));
+      if (proBtn) proBtn.addEventListener('click', () => handleLogin('pro'));
 
-  // 5. 事件绑定 (这是最稳妥的方式)
-  if (liteBtn) liteBtn.addEventListener("click", checkLiteAccess);
-  if (proBtn) proBtn.addEventListener("click", checkProAccess);
-
-  // 绑定回车键 (按 Enter 也能登录)
-  if (liteInput) {
-    liteInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") checkLiteAccess();
+      // 绑定回车事件
+      const bindEnter = (input, type) => {
+        if (input) {
+          input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleLogin(type);
+          });
+        }
+      };
+      
+      bindEnter(liteInput, 'lite');
+      bindEnter(proInput, 'pro');
+      
+      // 添加简单的震动动画样式
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          75% { transform: translateX(5px); }
+        }
+      `;
+      document.head.appendChild(style);
     });
-  }
-  if (proInput) {
-    proInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") checkProAccess();
-    });
-  }
+  })();
 </script>
-  </body>
-</html>

@@ -1,23 +1,56 @@
 ---
 import type { Props } from "@astrojs/starlight/props";
 import Default from "@astrojs/starlight/components/Head.astro";
+
+const ogTitle = Astro.props.entry?.data?.title || Astro.props.siteTitle;
 ---
 
 <Default {...Astro.props}><slot /></Default>
 
+<meta property="og:site_name" content="AI&PPT 第二大脑" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content={ogTitle} />
+<meta name="twitter:card" content="summary_large_image" />
+
+<script is:inline>
+  // 定义同步逻辑：把 data-theme 的状态同步给 class="dark"
+  function syncTheme() {
+    const root = document.documentElement;
+    const theme = root.getAttribute('data-theme');
+    
+    // 如果 Starlight 说是暗色，或者系统偏好是暗色且没设置过
+    const isDark = theme === 'dark' || 
+      (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    if (isDark) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }
+
+  // A. 页面刚加载时，立即跑一次
+  syncTheme();
+
+  // B. 监听页面变化 (防止 Astro 视图过渡导致失效)
+  document.addEventListener('astro:after-swap', syncTheme);
+
+  // C. 【核武器】创建一个观察者，死死盯着 html 标签
+  // 只要 data-theme 属性一变，马上触发 syncTheme
+  const observer = new MutationObserver(syncTheme);
+  observer.observe(document.documentElement, { 
+    attributes: true, 
+    attributeFilter: ['data-theme'] 
+  });
+</script>
+
 <script is:inline>
   (function () {
     try {
-      // 这里的逻辑必须极简，越快越好
       const role = localStorage.getItem("user_role");
-
-      // 如果是 Pro，立刻贴上标签
-      // 此时 <body> 还没开始渲染，所以之后 CSS 匹配时，直接就是显示状态
       if (role === "pro") {
         document.documentElement.setAttribute("data-user-role", "pro");
       }
-    } catch (e) {
-      // 容错处理
-    }
+    } catch (e) {}
   })();
 </script>

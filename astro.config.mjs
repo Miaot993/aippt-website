@@ -1,10 +1,17 @@
-// astro.config.mjs
+// =================================================================
+// 配置文件：astro.config.mjs
+// 这是你网站的“大脑”，控制着网站如何构建、长什么样。
+// =================================================================
+
 import { defineConfig } from 'astro/config';
+// 引入 Tailwind v4 的 Vite 插件（最新版写法）
 import tailwindcss from '@tailwindcss/vite';
+// 引入 Starlight 文档主题集成
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-  // 1. Vite 插件配置
+  // 1. Vite 构建配置
+  // 因为使用了 Tailwind v4，它现在是作为一个 Vite 插件运行的，而不是 Astro 集成。
   vite: {
     plugins: [tailwindcss()],
   },
@@ -92,7 +99,7 @@ export default defineConfig({
       // 社交链接 (放在这里才是正确的，在 starlight 配置对象内部)
       // ================================================
       // social: [
-      //   {
+      //   {x
       //     label: 'GitHub',
       //     href: 'https://github.com/Miaot993/aippt-website',
       //     icon: 'github',

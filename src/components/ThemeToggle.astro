@@ -1,16 +1,17 @@
 ---
 // src/components/ThemeToggle.astro
+// 这个组件只负责一件事：切换白天/黑夜模式
 ---
 
 <theme-toggle>
   <button
     id="theme-toggle"
     type="button"
-    class="relative flex items-center justify-center w-9 h-9 rounded-full text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors focus:outline-none"
+    class="relative flex items-center justify-center w-9 h-9 rounded-full text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
     aria-label="Toggle Dark Mode"
   >
     <svg
-      class="w-5 h-5 hidden dark:block"
+      class="w-5 h-5 hidden dark:block text-amber-400"
       fill="none"
       viewBox="0 0 24 24"
       stroke-width="1.5"
@@ -24,7 +25,7 @@
     </svg>
 
     <svg
-      class="w-5 h-5 block dark:hidden"
+      class="w-5 h-5 block dark:hidden text-indigo-600"
       fill="none"
       viewBox="0 0 24 24"
       stroke-width="1.5"
@@ -40,52 +41,43 @@
 </theme-toggle>
 
 <script>
-  // src/components/ThemeToggle.astro 的 <script> 部分
-
-  // 🛡️ 此时页面已经渲染完毕，这里只做“二次安检”
-  // 防止有人手动修改 HTML 属性后强行访问
-  (function () {
-    const role = localStorage.getItem("user_role") || "lite";
-
-    // 拦截非法访问
-    if (role !== "pro" && window.location.pathname.includes("/pro/")) {
-      window.stop();
-      window.location.href = "/";
-    }
-  })();
-
+  // 定义 Web Component，确保逻辑封装
   class ThemeToggle extends HTMLElement {
     constructor() {
       super();
       const button = this.querySelector("button");
 
-      button?.addEventListener("click", () => {
+      if (!button) return;
+
+      // 绑定点击事件
+      button.addEventListener("click", () => {
         const root = document.documentElement;
+        
+        // 1. 获取当前状态
+        // 逻辑：如果 html 标签上有 data-theme='dark'，或者类名里有 'dark'
+        const currentTheme = root.getAttribute("data-theme");
+        const isDark = currentTheme === "dark";
 
-        // 判断当前是不是暗色
-        // 逻辑：如果有 data-theme='dark' 或者 (没有设置过 且 系统是暗色)
-        const theme = root.getAttribute("data-theme");
-        const systemDark = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
-        const isDark = theme === "dark" || (!theme && systemDark);
-
+        // 2. 计算下一个状态
         const nextTheme = isDark ? "light" : "dark";
 
-        // 1. 设置 Starlight 需要的属性
+        // 3. 执行切换 (双管齐下)
+        // A. 告诉 Starlight (通过 data-theme)
         root.setAttribute("data-theme", nextTheme);
 
-        // 2. ✅ 核心修复：同步切换 Tailwind 需要的 class
+        // B. 告诉 Tailwind (通过 class)
         if (nextTheme === "dark") {
           root.classList.add("dark");
         } else {
           root.classList.remove("dark");
         }
 
-        // 3. 记住用户的选择
+        // 4. 持久化存储
         localStorage.setItem("starlight-theme", nextTheme);
       });
     }
   }
+
+  // 注册组件
   customElements.define("theme-toggle", ThemeToggle);
 </script>
