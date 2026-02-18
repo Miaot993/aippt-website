@@ -193,3 +193,19 @@ header.header {
 [data-template="splash"] .hero {
   margin: 0 auto !important;
 }
+
+/* ==========================================================================
+   8. 隐藏 Splash 页面默认的 H1 标题 (终极修正版)
+   原因：根据截图，默认标题 H1 是 .sl-container 的直接子元素，而不是在 markdown 内容里。
+   ========================================================================== 
+*/
+
+/* 精准狙击：只隐藏 .sl-container 直属的 h1，且仅在 splash 页面生效 */
+[data-template="splash"] .sl-container > h1#_top {
+  display: none !important;
+}
+
+/* 备用方案：如果上面的 ID 变了，就用结构伪类 */
+[data-template="splash"] .sl-container > h1:first-child {
+  display: none !important;
+}

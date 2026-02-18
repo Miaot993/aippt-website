@@ -23,14 +23,19 @@ export const allPosts = (await getCollection('docs'))
     return new Date(b.data.date || 0) - new Date(a.data.date || 0);
   });
 
-{/* ✨ 使用 .not-content 作为“信物”
-  我们在 global.css 里写了逻辑：凡是包着 .not-content 的容器，统统强制全宽！
+{/* ✅ 核心修正：严格复刻 Pro 首页的双层结构
+  1. 外层 .not-content: 负责“清洗”样式，不带任何布局属性。
+  2. 内层 div: 负责布局，只用 w-full max-w-7xl mx-auto px-6 lg:px-8。
+     (去掉了之前的 mt-8，让它自然排列，和 Pro 首页完全零温差)
 */}
 <div class="not-content">
-  <div class="w-full max-w-7xl mx-auto px-6 lg:px-8 mt-8">
+  
+  <div class="w-full max-w-7xl mx-auto">
 
-    {/* 头部信息区 */}
-    <div class="flex flex-col items-start gap-4 mb-12">
+    {/* 头部信息区：为了美观，我们在内部给它加一点上边距 (pt-8) 
+        这样既不破坏外层容器的对齐逻辑，又能保持视觉呼吸感 
+    */}
+    <div class="flex flex-col items-start gap-4 mb-12 pt-8">
       <a href="/pro" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors no-underline shadow-sm">
         <Icon name="left-arrow" class="w-4 h-4" />
         返回 Pro 指挥中心
@@ -54,11 +59,15 @@ export const allPosts = (await getCollection('docs'))
             description={post.data.description}
             href={`/${post.slug}`} 
             date={post.data.date ? new Date(post.data.date).toLocaleDateString() : ''}
-            tag="资源" 
+            
+            /* 👇👇👇 核心修改在这里 👇👇👇 */
+            /* 逻辑：如果这篇文章有 tags 且不为空，就显示tag；否则显示默认的 "资源" */
+            tag={post.data.tags && post.data.tags.length > 0 ? post.data.tags : ["资源"]}
           />
         ))
       }
     </div>
 
   </div>
+  
 </div>
