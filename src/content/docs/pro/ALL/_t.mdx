@@ -73,39 +73,18 @@ export const featuredPosts = proPosts.filter(post => post.data.featured === true
 
   {/* ================= SECTION 2: All Resources ================= */}
   
-  {/* 标题栏容器 */}
+  {/* 标题 */}
   <div class="flex items-center justify-between mb-8">
-      
-      {/* 左侧标题 
-          1. 去掉了 !mb-6，因为外层 div 已经有 mb-8 了，这样对齐更精准。
-          2. 保持 text-3xl font-bold
-      */}
       <h2 class="text-3xl font-bold !mb-6 text-zinc-900 dark:text-white flex items-center gap-3">
         最新更新 
         <span class="text-lg font-normal text-zinc-400 ml-1">({proPosts.length})</span>
       </h2>
 
-      {/* 右侧引导链接 
-          1. whitespace-nowrap: 核心！强制文字和图标在一行，死都不换行。
-          2. group: 开启父子联动，鼠标悬停在 a 标签时，控制内部图标动。
-          3. transition-colors: 增加颜色过渡。
-      */}
-      <a 
-        href="/pro/all" 
-        class="group inline-flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400 whitespace-nowrap transition-colors hover:text-indigo-700 dark:hover:text-indigo-300 no-underline"
-      >
-        全部资源 
-        
-        {/* 箭头图标
-            1. transition-transform: 开启变形动画
-            2. group-hover:translate-x-1: 当鼠标悬停在父级(group)时，自己向右平移 4px
-        */}
-        <Icon 
-          name="right-arrow" 
-          class="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" 
-        />
+      {/* 引导链接：去侧边栏或分类页 */}
+      <a href="/pro/all" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+        浏览分类库 <Icon name="right-arrow" class="w-3 h-3" />
       </a>
-  </div>
+    </div>
     
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {

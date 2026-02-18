@@ -7,6 +7,11 @@ next: false
 sidebar:
   order: 999 
   label: "📚 全部资源索引"
+# 👇👇👇 关键修改：启用 Hero 模式，但把内容写得很简单 👇👇👇
+hero:
+  title: 全站资源索引
+  tagline: Pro Max 会员专属的完整知识库清单
+# 👆👆👆 这样 Starlight 就会用无边框的 Hero 组件渲染标题，而不是带横线的 H1
 ---
 
 import { getCollection } from 'astro:content';
@@ -35,20 +40,16 @@ export const allPosts = (await getCollection('docs'))
     {/* 头部信息区：为了美观，我们在内部给它加一点上边距 (pt-8) 
         这样既不破坏外层容器的对齐逻辑，又能保持视觉呼吸感 
     */}
-    <div class="flex flex-col items-start gap-4 mb-12 pt-8">
+    <div class="flex flex-col items-start gap-4 mb-32 pt-0">
       <a href="/pro" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors no-underline shadow-sm">
         <Icon name="left-arrow" class="w-4 h-4" />
-        返回 Pro 指挥中心
+        返回 Pro 用户专属页
       </a>
-
-      <div class="max-w-3xl">
-        <p class="text-lg text-zinc-600 dark:text-zinc-300 leading-relaxed m-0">
-          当前资料库共收录 <span class="font-bold text-indigo-600 dark:text-indigo-400 px-1">{allPosts.length}</span> 篇高阶资源。
-          <br class="hidden sm:block" />
-          您可以随时使用 <kbd class="font-mono bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-sm border border-zinc-200 dark:border-zinc-700 mx-1">Cmd + K</kbd> 唤起全局搜索，或在下方按更新时间浏览。
-        </p>
-      </div>
     </div>
+
+    {/* 👇👇👇 2️⃣ 物理隔离带 (Spacer) 👇👇👇 */}
+    {/* h-24 = 96px 的高度，你可以随意改为 h-32 (128px) 或 h-16 (64px) */}
+    <div class="h-4 w-full"></div>
 
     {/* 卡片列表 */}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-24">
