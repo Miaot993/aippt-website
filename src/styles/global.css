@@ -193,3 +193,41 @@ header.header {
     padding-top: 3rem !important; 
   }
 }
+
+
+
+/* =================================================================
+   9. 侧边栏去线与去缩进 (维度打击版)
+   策略：
+   1. 变量层：把侧边栏区域的“线条颜色”变量强行设为透明 (隐形术)。
+   2. 样式层：物理移除边框和缩进。
+   ================================================================= 
+*/
+
+/* 【第一招：隐形术】针对侧边栏容器，重写系统变量 */
+/* 只要在这个容器里，所有调用系统分割线的地方，颜色都会变成透明 */
+/* .sidebar-content, 
+.sidebar-pane, 
+#starlight__sidebar {
+  --sl-color-hairline: transparent !important;
+  --sl-color-hairline-light: transparent !important;
+  --sl-color-hairline-dark: transparent !important;
+} */
+
+/* 【第二招：物理拆除】针对所有层级的列表 */
+/* .sidebar-content ul,
+.sidebar-pane ul {
+  border-inline-start: 0px solid transparent !important;
+  border-left: 0px solid transparent !important;
+  border: none !important;
+
+  padding-inline-start: 0 !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+} */
+
+/* 【第三招：细节修复】防止文字贴太紧，给一点点呼吸感
+.sidebar-content li > a,
+.sidebar-content summary {
+  padding-left: 4px !important; 
+} */

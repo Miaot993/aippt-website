@@ -23,7 +23,7 @@ sidebar:
 
 进行 512x 图片生成时主流显卡速度对比：
 
-![image.png](./images-02/image.png)
+![image.png](./02-images/image.png)
 
 # 二、环境部署
 
@@ -58,7 +58,7 @@ PATH_TO_CLONE
 
 将启动器复制到下载仓库的目录下即可，更新管理会更方便。
 
-![image.png](./images-02/image%201.png)
+![image.png](./02-images/image%201.png)
 
 打开启动器后，可一键启动
 
@@ -68,7 +68,7 @@ PATH_TO_CLONE
 
 xFormers 能极大地改善了内存消耗和速度，建议开启。准备工作完毕后，点击一键启动即可。等待浏览器自动跳出，或是控制台弹出本地 URL 后说明启动成功
 
-![image.png](./images-02/image%202.png)
+![image.png](./02-images/image%202.png)
 
 如果报错提示缺少 Pytorch，则需要在启动器中点击配置
 
@@ -80,15 +80,15 @@ Stable Diffusion webui 的更新比较频繁，请根据需求在“版本管理
 
 Stable Diffusion 可配置大量插件扩展，在 webui 的“扩展”选项卡下，可以安装插件：
 
-![image.png](./images-02/image%203.png)
+![image.png](./02-images/image%203.png)
 
 点击“加载自”后，目录会刷新，选择需要的插件点击右侧的 install 即可安装。
 
-![image.png](./images-02/image%204.png)
+![image.png](./02-images/image%204.png)
 
 安装完毕后，需要重新启动用户界面：
 
-![image.png](./images-02/image%205.png)
+![image.png](./02-images/image%205.png)
 
 # 三、功能介绍
 
@@ -96,19 +96,19 @@ Stable Diffusion 可配置大量插件扩展，在 webui 的“扩展”选项�
 
 选择需要使用的模型（底模），这是对生成结果影响最大的因素，主要体现在画面风格上。
 
-![image.png](./images-02/image%206.png)
+![image.png](./02-images/image%206.png)
 
 在第一个框中填入提示词（Prompt），对想要生成的东西进行文字描述
 
-![image.png](./images-02/image%207.png)
+![image.png](./02-images/image%207.png)
 
 在第二个框中填入负面提示词（Negative prompt)，你不想要生成的东西进行文字描述
 
-![image.png](./images-02/image%208.png)
+![image.png](./02-images/image%208.png)
 
 选择采样方法、采样次数、图片尺寸等参数。
 
-![image.png](./images-02/image%209.png)
+![image.png](./02-images/image%209.png)
 
 - Sampler（采样器/采样方法） 选择使用哪种采样器。 Euler a（Eular ancestral）可以以较少的步数产生很大的多样性，不同的步数可能有不同的结果。而非 ancestral 采样器都会产生基本相同的图像。DPM 相关的采样器通常具有不错的效果，但耗时也会相应增加。
     - Euler 是最简单、最快的
@@ -121,11 +121,11 @@ Stable Diffusion 可配置大量插件扩展，在 webui 的“扩展”选项�
 - Sampling Steps（采样步数） Stable Diffusion 的工作方式是从以随机高斯噪声起步，向符合提示的图像一步步降噪接近。随着步数增多，可以得到对目标更小、更精确的图像。但增加步数也会增加生成图像所需的时间。增加步数的边际收益递减，取决于采样器。一般开到 20~30。
 - 不同采样步数与采样器之间的关系：
 
-![1.png](./images-02/1.png)
+![1.png](./02-images/1.png)
 
 - CFG Scale（提示词相关性） 图像与你的提示的匹配程度。增加这个值将导致图像更接近你的提示，但它也在一定程度上降低了图像质量。 可以用更多的采样步骤来抵消。过高的 CFG Scale 体现为粗犷的线条和过锐化的图像。一般开到 7~11。 CFG Scale 与采样器之间的关系：
 
-![2.png](./images-02/2.png)
+![2.png](./02-images/2.png)
 
 - 生成批次 每次生成图像的组数。一次运行生成图像的数量为“批次* 批次数量”。
 - 每批数量 同时生成多少个图像。增加这个值可以提高性能，但也需要更多的显存。大的 Batch Size 需要消耗巨量显存。若没有超过 12G 的显存，请保持为 1。
@@ -136,7 +136,7 @@ Stable Diffusion 可配置大量插件扩展，在 webui 的“扩展”选项�
 
 - 高清修复
 
-![image.png](./images-02/image%2010.png)
+![image.png](./02-images/image%2010.png)
 
 通过勾选 "Highres. fix" 来启用。 默认情况下，文生图在高分辨率下会生成非常混沌的图像。如果使用高清修复，会型首先按照指定的尺寸生成一张图片，然后通过放大算法将图片分辨率扩大，以实现高清大图效果。最终尺寸为（原分辨率*缩放系数 Upscale by)。
 
@@ -146,7 +146,7 @@ Stable Diffusion 可配置大量插件扩展，在 webui 的“扩展”选项�
 - 面部修复 修复画面中人物的面部，但是非写实风格的人物开启面部修复可能导致面部崩坏。
 - 点击“生成”
 
-![image.png](./images-02/image%2011.png)
+![image.png](./02-images/image%2011.png)
 
 # 四、提示词
 
@@ -192,7 +192,7 @@ Stable Diffusion 可配置大量插件扩展，在 webui 的“扩展”选项�
 
 还可以通过 Prompt Editing 使得 AI 在不同的步数生成不一样的内容，譬如在某阶段后，绘制的主体由男人变成女人。
 
-![3.png](./images-02/3.png)
+![3.png](./02-images/3.png)
 
 语法为：
 
@@ -216,13 +216,13 @@ Stable Diffusion 可配置大量插件扩展，在 webui 的“扩展”选项�
 
 在第一步时，提示词为“cow in a field”； 在第二步时，提示词为"horse in a field."； 在第三步时，提示词为"cow in a field" ，以此类推。
 
-![30b169db-96f6-4d54-a0a8-25383a2c9404.webp](./images-02/30b169db-96f6-4d54-a0a8-25383a2c9404.webp)
+![30b169db-96f6-4d54-a0a8-25383a2c9404.webp](./02-images/30b169db-96f6-4d54-a0a8-25383a2c9404.webp)
 
 ### Token
 
 实际上，程序是将输入的关键词以 Token 的形式传入模型进行计算的：
 
-![image.png](./images-02/image%2012.png)
+![image.png](./02-images/image%2012.png)
 
 “ *(Medieval astronomer using a telescope with a cosmic starry sky in the background.sketch, hand draw style, con, uncomplicated background* )”转换为 Token ID 即： *263, 10789, 40036, 1996, 320, 19037, 593, 320, 18304, 30963, 2390, 530, 518, 5994, 8, 11, 263, 5269, 267, 2463, 4001, 1844, 267, 5646, 267, 569, 16621, 5994, 264* 。
 
@@ -251,7 +251,7 @@ Controlnet 允许通过线稿、动作识别、深度信息等对生成的图像
 
 请注意，在使用前请确保 ControlNet 设置下的路径与本地 Stable Diffusion 的路径同步
 
-![image.png](./images-02/image%2013.png)
+![image.png](./02-images/image%2013.png)
 
 ### 基本流程
 
@@ -268,59 +268,59 @@ Controlnet 允许通过线稿、动作识别、深度信息等对生成的图像
 
 - canny 用于识别输入图像的边缘信息。
 
-![4.png](./images-02/4.png)
+![4.png](./02-images/4.png)
 
 - depth 用于识别输入图像的深度信息。
 
-![5.png](./images-02/5.png)
+![5.png](./02-images/5.png)
 
 - hed 用于识别输入图像的边缘信息，但边缘更柔和。
 
-![6.png](./images-02/6.png)
+![6.png](./02-images/6.png)
 
 - mlsd 用于识别输入图像的边缘信息，一种轻量级的边缘检测。 它对横平竖直的线条非常敏感，因此更适用于于室内图的生成。
 
-![7.png](./images-02/7.png)
+![7.png](./02-images/7.png)
 
 - normal 用于识别输入图像的法线信息。
 
-![8.png](./images-02/8.png)
+![8.png](./02-images/8.png)
 
 - openpose 用于识别输入图像的动作信息。
 
-![9.png](./images-02/9.png)
+![9.png](./02-images/9.png)
 
 OpenPose Editor 插件可以自行修改姿势，导出到文生图或图生图。
 
-![10.png](./images-02/10.png)
+![10.png](./02-images/10.png)
 
 - scribble 将输入图像作为线稿识别。如果线稿是白色背景，务必勾选“Invert Input Color”
 
-![11.png](./images-02/11.png)
+![11.png](./02-images/11.png)
 
 - fake_scribble 识别输入图像的线稿，然后再将它作为线稿生成图像。
 
-![12.png](./images-02/12.png)
+![12.png](./02-images/12.png)
 
 - segmentation 识别输入图像各区域分别是什么类型的物品，再用此构图信息生成图像。
 
-![13.png](./images-02/13.png)
+![13.png](./02-images/13.png)
 
 如果想绘制一张符合 segementation 规范的图像，可以使用以下色表绘制。 [color_coding_semantic_segmentation_classes - Google 表格](https://link.zhihu.com/?target=https%3A//docs.google.com/spreadsheets/d/1se8YEtb2detS7OuPE86fXGyD269pMycAWe2mtKUj2W8/edit%23gid%3D0)
 
-![14.png](./images-02/14.png)
+![14.png](./02-images/14.png)
 
 ## 多 ControlNet 合成
 
 在 ControlNet 的设置下，可以调整可用 ControlNet 的数量。
 
-![15.png](./images-02/15.png)
+![15.png](./02-images/15.png)
 
 在多个 ControlNet 模式下，结果会将输入的信息合并生成图像：
 
-![16.png](./images-02/16.png)
+![16.png](./02-images/16.png)
 
-![17.png](./images-02/17.png)
+![17.png](./02-images/17.png)
 
 # 六、更多模型
 
@@ -344,17 +344,17 @@ OpenPose Editor 插件可以自行修改姿势，导出到文生图或图生图�
 
 下载模型后需要将之放置在指定的目录下，请注意，不同类型的模型应该拖放到不同的目录下。 模型的类型可以通过[Stable Diffusion 法术解析](https://link.zhihu.com/?target=https%3A//spell.novelai.dev/)检测。
 
-![18.png](./images-02/18.png)
+![18.png](./02-images/18.png)
 
 - 大模型（Ckpt）：放入 models\Stable-diffusion
 
-![19.png](./images-02/19.png)
+![19.png](./02-images/19.png)
 
 - VAE 模型： 一些大模型需要配合 vae 使用，对应的 vae 同样放置在 models\Stable-diffusion 或 models\VAE 目录，然后在 webui 的设置栏目选择。
 
-![image.png](./images-02/image%2014.png)
+![image.png](./02-images/image%2014.png)
 
-![image.png](./images-02/image%2015.png)
+![image.png](./02-images/image%2015.png)
 
 - Lora/LoHA/LoCon 模型：放入 extensions\sd-webui-additional-networks\models\lora，也可以在 models/Lora 目录
 - Embedding 模型：放入 embeddings 目录
@@ -363,7 +363,7 @@ OpenPose Editor 插件可以自行修改姿势，导出到文生图或图生图�
 
 - Checkpoint(ckpt)模型 对效果影响最大的模型。在 webui 界面的左上角选择使用。
 
-![image.png](./images-02/image%2016.png)
+![image.png](./02-images/image%2016.png)
 
 一些模型会有触发词，即在提示词内输入相应的单词才会生效。
 
@@ -371,7 +371,7 @@ OpenPose Editor 插件可以自行修改姿势，导出到文生图或图生图�
 
 对人物、姿势、物体表现较好的模型，在 ckpt 模型上附加使用。 在 webui 界面的 Additional Networks 下勾线 Enable 启用，然后在 Model 下选择模型，并可用 Weight 调整权重。权重越大，该 Lora 的影响也越大。 不建议权重过大（超过 1.2），否则很容易出现扭曲的结果。
 
-![image.png](./images-02/image%2017.png)
+![image.png](./02-images/image%2017.png)
 
 多个 lora 模型混合使用可以起到叠加效果，譬如一个控制面部的 lora 配合一个控制画风的 lora 就可以生成具有特定画风的特定人物。 因此可以使用多个专注于不同方面优化的 Lora，分别调整权重，结合出自己想要实现的效果。
 

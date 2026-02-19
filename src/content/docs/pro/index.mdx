@@ -24,7 +24,7 @@ import { Image } from 'astro:assets';
 import { Icon } from '@astrojs/starlight/components';
 import ResourceCard from '../../../components/ResourceCard.astro';
 import FeaturedCard from '../../../components/FeaturedCard.astro';
-import coverImg1 from './jiaocheng/banner.png';
+import coverImg1 from './04-jiaocheng/banner.png';
 
 export const proPosts = (await getCollection('docs'))
   .filter(post => post.id.startsWith('pro/') && !post.id.endsWith('index.mdx'))
