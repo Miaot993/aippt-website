@@ -27,15 +27,34 @@
 
 <div id="pro-paywall" class="w-full clear-both flex justify-center">
   <div class="relative z-50 w-full max-w-md mx-auto">
-    <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 shadow-2xl shadow-indigo-500/20 text-center transform hover:scale-[1.02] transition-transform">
+    {/*
+        👇 修改 1：卡片容器增强
+        在原来的 class 基础上，增加了 'flex flex-col items-center'
+        这能确保里面的图标、标题、文字、按钮全部强制水平居中对齐。
+    */}
+    <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 shadow-2xl shadow-indigo-500/20 flex flex-col items-center text-center transform hover:scale-[1.02] transition-transform">
+
+      {/* 图标容器：这里的 mx-auto 现在有了双重保险 */}
       <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4">
         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
       </div>
+
       <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-2">解锁 Pro 权限</h3>
-      <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-6 leading-relaxed">您正在使用 Lite 体验版。<br/>升级 Pro，立即解锁全站核心工作流、商业源文件及后续永久更新。</p>
+      
+      {/* 👇 核心修复：删掉了失效的 Tailwind 类名，直接动用 style="margin-bottom: 40px;" 
+          这里的 40px 你可以随意修改，数字越大，间距越大！绝对生效！
+      */}
+      <p 
+        class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed" 
+        style="margin-bottom: 40px;"
+      >
+        您正在使用 Lite 体验版。<br/>升级 Pro，立即解锁全站核心工作流、商业源文件<br/>以及后续永久更新。
+      </p>
+      
       <a href="/#pricing" class="block w-full py-3.5 px-4 bg-zinc-900 dark:bg-white !text-white dark:!text-zinc-900 !no-underline rounded-xl font-bold transition-colors shadow-lg">
         立即获取 Access Key
       </a>
+
     </div>
   </div>
 </div>
