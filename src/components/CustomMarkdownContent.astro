@@ -1,0 +1,38 @@
+---
+// src/components/CustomMarkdownContent.astro
+import Default from '@astrojs/starlight/components/MarkdownContent.astro';
+import Paywall from './Paywall.astro';
+
+// 兼容多个 Astro 版本的 entry 获取方式
+const entry = Astro.props.entry || Astro.locals?.starlightRoute?.entry;
+const currentPath = Astro.url.pathname;
+
+// 1. 系统核心页面免检 (直接看真实的 URL，最准确！)
+// 如果你有其他不需要加密的页面，把路径加到这里面
+const systemPaths = ['/overview', '/overview/', '/all', '/all/', '/'];
+const isSystemPage = systemPaths.includes(currentPath);
+
+// 2. Lite 标签免检
+let badgeText = '';
+const rawBadge = entry?.data?.sidebar?.badge || entry?.data?.badge;
+if (typeof rawBadge === 'string') {
+  badgeText = rawBadge;
+} else if (rawBadge?.text) {
+  badgeText = rawBadge.text;
+}
+
+const isLiteArticle = 
+  badgeText.toUpperCase().includes('LITE') || 
+  badgeText.includes('试读') || 
+  badgeText.includes('免费');
+
+// 3. 终极判定：不是系统页，且没有 Lite 护身符 -> 盘他！
+const shouldPaywall = !isSystemPage && !isLiteArticle;
+---
+
+<Default {...Astro.props}>
+  <slot />
+  
+  {/* 只要判定通过，无视一切强制注入 Paywall */}
+  {shouldPaywall && <Paywall />}
+</Default>

@@ -4,10 +4,17 @@ description: 全栈工作流与核心资产库
 template: splash
 prev: false
 next: false
+
+# 👇 核心魔法：加上这三行，给它 VIP 插队特权
+sidebar:
+  order: 0  # 数字越小越靠前，0 代表绝对的第一名！
+
 hero:
   tagline: 欢迎，超级个体。这是您的全套数字军火库。
   image:
-    file: ../../../assets/logo.svg
+    # ❌ 原来是: ../../../assets/logo.svg
+    # ✅ 修改为: ../../assets/logo.svg (少了一个 ../)
+    file: ../../assets/logo.svg
   actions:
     - text: 加入知识星球
       link: https://zsxq.com/你的星球链接
@@ -22,12 +29,24 @@ hero:
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import { Icon } from '@astrojs/starlight/components';
-import ResourceCard from '../../../components/ResourceCard.astro';
-import FeaturedCard from '../../../components/FeaturedCard.astro';
+import ResourceCard from '../../components/ResourceCard.astro';
+import FeaturedCard from '../../components/FeaturedCard.astro';
+
+{/* // ⚠️ 注意：这里假设 '04-jiaocheng' 文件夹和 overview.mdx 在同一级目录 */}
+{/* // 如果找不到图片，可能需要改成 '../04-jiaocheng/banner.png' 或者确认文件夹位置 */}
 import coverImg1 from './04-jiaocheng/banner.png';
 
 export const proPosts = (await getCollection('docs'))
-  .filter(post => post.id.startsWith('pro/') && !post.id.endsWith('index.mdx'))
+  .filter(post => {
+    // 1. 排除 lite 文件夹下的内容
+    const isNotLite = !post.id.startsWith('lite/');
+    // 2. 排除 overview 页面自己 (防止死循环)
+    const isNotSelf = post.id !== 'overview.mdx';
+    // 3. 排除其他的 index 索引页
+    const isNotIndex = !post.slug.endsWith('index');
+    
+    return isNotLite && isNotSelf && isNotIndex;
+  })
   .sort((a, b) => {
     const dateA = new Date(a.data.date || '2000-01-01');
     const dateB = new Date(b.data.date || '2000-01-01');
@@ -41,65 +60,40 @@ export const featuredPosts = proPosts.filter(post => post.data.featured === true
 
   {/* ================= SECTION 1: Featured ================= */}
   
-  {/* 标题 */}
-  {/* !mb-12: 前面加感叹号 ! 是强制覆盖 Starlight 默认样式的意思 */}
   <h2 class="text-3xl font-bold !mb-6 text-gray-900 dark:text-white">核心资源</h2>
   
-  {/* 精选卡片网格 */}
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <FeaturedCard
       title="Claude 商业叙事逻辑 SOP"
       description="不要再让 AI 写车轱辘话。掌握麦肯锡顾问的思考框架，一键生成高质量大纲。"
-      href="/guides/pro/claude-logic"
+      href="/guides/overview/claude-logic"
       image={coverImg1}
       tag="SOP"
     />
     <FeaturedCard
       title="MJ + Gamma 视觉流"
       description="从 Midjourney 生图到 Gamma 排版，解决风格不统一的终极杀器。"
-      href="/guides/pro/visual-flow"
+      href="/guides/overview/visual-flow"
       image={coverImg1}
       tag="Design"
     />
   </div>
 
-
-  {/* 👇👇👇 核心修改：物理隔离带 👇👇👇 */}
-  {/* 这里插入了一个高度为 h-32 (128px) 的空白块，强制撑开距离 */}
-  {/* 没有任何 CSS 权重能打败这个实体的 div */}
   <div class="h-16 w-full"></div> 
-  {/* 👆👆👆 核心修改结束 👆👆👆 */}
-
 
   {/* ================= SECTION 2: All Resources ================= */}
   
-  {/* 标题栏容器 */}
   <div class="flex items-center justify-between mb-8">
-      
-      {/* 左侧标题 
-          1. 去掉了 !mb-6，因为外层 div 已经有 mb-8 了，这样对齐更精准。
-          2. 保持 text-3xl font-bold
-      */}
       <h2 class="text-3xl font-bold !mb-6 text-zinc-900 dark:text-white flex items-center gap-3">
         最新更新 
         <span class="text-lg font-normal text-zinc-400 ml-1">({proPosts.length})</span>
       </h2>
 
-      {/* 右侧引导链接 
-          1. whitespace-nowrap: 核心！强制文字和图标在一行，死都不换行。
-          2. group: 开启父子联动，鼠标悬停在 a 标签时，控制内部图标动。
-          3. transition-colors: 增加颜色过渡。
-      */}
       <a 
-        href="/pro/all" 
+        href="/all" 
         class="group inline-flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400 whitespace-nowrap transition-colors hover:text-indigo-700 dark:hover:text-indigo-300 no-underline"
       >
         全部资源 
-        
-        {/* 箭头图标
-            1. transition-transform: 开启变形动画
-            2. group-hover:translate-x-1: 当鼠标悬停在父级(group)时，自己向右平移 4px
-        */}
         <Icon 
           name="right-arrow" 
           class="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" 
@@ -109,7 +103,6 @@ export const featuredPosts = proPosts.filter(post => post.data.featured === true
     
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {
-        // ✂️ 只切片前 12 个
         proPosts.slice(0, 12).map((post) => (
           <ResourceCard 
             title={post.data.title}
@@ -122,7 +115,6 @@ export const featuredPosts = proPosts.filter(post => post.data.featured === true
       }
     </div>
 
-    {/* 👇 底部引导模块：仅当文章数超过 12 篇时才显示 */}
     { proPosts.length > 12 && (
       <div class="mt-12 p-8 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800 rounded-2xl text-center">
         <p class="text-zinc-500 dark:text-zinc-400 mb-4 text-sm leading-relaxed">
@@ -132,7 +124,6 @@ export const featuredPosts = proPosts.filter(post => post.data.featured === true
       </div>
     )}
     
-    {/* 底部留白 */}
     <div class="h-32 w-full"></div>
 
 </div>

@@ -1020,16 +1020,16 @@ import logo from "../assets/logo.svg"; // 👈 必须添加这行，指向你刚
         // Lite 入口：既能输 Lite 码，也能输 Pro 码
         if (KEYS.LITE.includes(val)) {
           targetRole = 'lite';
-          targetUrl = '/lite/';
+          targetUrl = '/overview';
         } else if (KEYS.PRO.includes(val)) {
           targetRole = 'pro';
-          targetUrl = '/pro/';
+          targetUrl = '/overview';
         }
       } else {
         // Pro 入口：只能输 Pro 码
         if (KEYS.PRO.includes(val)) {
           targetRole = 'pro';
-          targetUrl = '/pro/';
+          targetUrl = '/overview';
         }
       }
 

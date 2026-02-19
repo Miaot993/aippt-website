@@ -5,24 +5,30 @@ template: splash
 prev: false
 next: false
 sidebar:
-  order: 999 
-  label: "📚 全部资源索引"
+  order: 1 
+  label: "全部资源"
 # 👇👇👇 关键修改：启用 Hero 模式，但把内容写得很简单 👇👇👇
 hero:
-  title: 全站资源索引
+  title: 全部资源
   tagline: Pro Max 会员专属的完整知识库清单
 # 👆👆👆 这样 Starlight 就会用无边框的 Hero 组件渲染标题，而不是带横线的 H1
 ---
 
 import { getCollection } from 'astro:content';
 import { Icon } from '@astrojs/starlight/components';
-import ResourceCard from '../../../../components/ResourceCard.astro';
+import ResourceCard from '../../components/ResourceCard.astro';
 
 export const allPosts = (await getCollection('docs'))
   .filter(post => {
-    return post.id.startsWith('pro/') && 
-           !post.id.endsWith('pro/index.mdx') && 
-           !post.id.includes('/ALL/index.mdx');
+    {/* 🚨 修改 2：彻底重写过滤逻辑（因为 'pro/' 文件夹已经不存在了）*/}
+    {/* 现在我们用“排除法”，把不需要显示在列表里的页面剔除 */}
+    const isNotLite = !post.id.startsWith('lite/');
+    const isNotOverview = post.id !== 'overview.mdx'; // 排除指挥中心
+    const isNotSelf = !post.id.includes('all/index.mdx'); // 排除当前这个索引页自己
+    const isNotRootIndex = post.id !== 'index.mdx'; // 排除你最外层的落地页首页
+
+    // 只要不是上面这四个，统统视为 Pro Max 资源展示出来！
+    return isNotLite && isNotOverview && isNotSelf && isNotRootIndex;
   })
   .sort((a, b) => {
     return new Date(b.data.date || 0) - new Date(a.data.date || 0);
@@ -41,7 +47,7 @@ export const allPosts = (await getCollection('docs'))
         这样既不破坏外层容器的对齐逻辑，又能保持视觉呼吸感 
     */}
     <div class="flex flex-col items-start gap-4 mb-32 pt-0">
-      <a href="/pro" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors no-underline shadow-sm">
+      <a href="/overview" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors no-underline shadow-sm">
         <Icon name="left-arrow" class="w-4 h-4" />
         返回 Pro 用户专属页
       </a>
