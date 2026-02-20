@@ -5,15 +5,12 @@ template: splash
 prev: false
 next: false
 
-# 👇 核心魔法：加上这三行，给它 VIP 插队特权
 sidebar:
-  order: 0  # 数字越小越靠前，0 代表绝对的第一名！
+  order: 0
 
 hero:
   tagline: 欢迎，超级个体。这是您的全套数字军火库。
   image:
-    # ❌ 原来是: ../../../assets/logo.svg
-    # ✅ 修改为: ../../assets/logo.svg (少了一个 ../)
     file: ../../assets/logo.svg
   actions:
     - text: 加入知识星球
@@ -28,23 +25,53 @@ hero:
 
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
-import { Icon } from '@astrojs/starlight/components';
+import { Icon, Tabs, TabItem } from '@astrojs/starlight/components';
 import ResourceCard from '../../components/ResourceCard.astro';
 import FeaturedCard from '../../components/FeaturedCard.astro';
-
-{/* // ⚠️ 注意：这里假设 '04-jiaocheng' 文件夹和 overview.mdx 在同一级目录 */}
-{/* // 如果找不到图片，可能需要改成 '../04-jiaocheng/banner.png' 或者确认文件夹位置 */}
 import coverImg1 from './04-jiaocheng/banner.png';
+
+{/* 👇 所有的 export 逻辑都统一放在这里（外层安全区） */}
+
+export const allImages = import.meta.glob('/src/content/docs/**/*.{png,jpg,jpeg,webp,gif,svg}', { eager: true });
+
+export function getHeroImage(post) {
+  // 1. 优先尝试获取 frontmatter 里的图片 (如果有的话)
+  let imgPath = post.data.hero?.image?.file || post.data.banner;
+  
+  // 2. 🚀 核心黑科技：提取 Astro MDX 里的 import 语句！
+  // 专门匹配类似 `import bannerImg from "./01-images/banner.png";` 的代码
+  if (!imgPath) {
+    const mdxImportMatch = post.body?.match(/import\s+.*?\s+from\s+['"]([^'"]+\.(?:png|jpe?g|webp|gif|svg))['"]/i);
+    if (mdxImportMatch) imgPath = mdxImportMatch[1]; // 完美抓到 "./01-images/banner.png"
+  }
+
+  // 3. 兜底策略：提取标准 Markdown 图片 ![alt](url)
+  if (!imgPath) {
+    const mdMatch = post.body?.match(/!\[.*?\]\((.*?)\)/);
+    if (mdMatch) imgPath = mdMatch[1];
+  }
+
+  // 4. 如果全都没有，返回 null，隐藏右侧图片
+  if (!imgPath) return null;
+  if (imgPath.startsWith('http') || imgPath.startsWith('data:')) return imgPath;
+
+  // 5. 将抓取到的相对路径转换为 Vite 内存绝对路径
+  const cleanImgPath = imgPath.replace(/^(\.\/|\/)/, ''); 
+  const folderPath = post.id.split('/').slice(0, -1).join('/'); 
+  const fullPath = `/src/content/docs/${folderPath ? folderPath + '/' : ''}${cleanImgPath}`;
+  const imageModule = allImages[fullPath];
+  
+  return imageModule?.default?.src || imageModule?.default || imgPath;
+}
+
+
+
 
 export const proPosts = (await getCollection('docs'))
   .filter(post => {
-    // 1. 排除 lite 文件夹下的内容
     const isNotLite = !post.id.startsWith('lite/');
-    // 2. 排除 overview 页面自己 (防止死循环)
     const isNotSelf = post.id !== 'overview.mdx';
-    // 3. 排除其他的 index 索引页
     const isNotIndex = !post.slug.endsWith('index');
-    
     return isNotLite && isNotSelf && isNotIndex;
   })
   .sort((a, b) => {
@@ -53,9 +80,22 @@ export const proPosts = (await getCollection('docs'))
     return dateB.valueOf() - dateA.valueOf();
   });
 
-{/* 找出所有标记为 featured: true 的精选文章 */}
 export const featuredPosts = proPosts.filter(post => post.data.featured === true);
 
+{/* 👇 核心逻辑：按文件夹名称对文章进行分组 (必须在 div 外面) */}
+export const groupedPosts = proPosts.reduce((acc, post) => {
+  const parts = post.id.split('/');
+  if (parts.length > 1) {
+    const rawFolderName = parts[0];
+    const cleanName = rawFolderName.replace(/^\d+-/, ''); 
+    if (!acc[cleanName]) acc[cleanName] = [];
+    acc[cleanName].push(post);
+  }
+  return acc;
+}, {});
+
+
+{/* 👇 从这里开始才是真正的 UI 渲染区 */}
 <div class="not-content">
 
   {/* ================= SECTION 1: Featured ================= */}
@@ -81,49 +121,67 @@ export const featuredPosts = proPosts.filter(post => post.data.featured === true
 
   <div class="h-16 w-full"></div> 
 
-  {/* ================= SECTION 2: All Resources ================= */}
+  {/* ================= SECTION 2: 分组知识库 (Tabs 模式) ================= */}
   
-  <div class="flex items-center justify-between mb-8">
+  <div class="mb-8 mt-16">
       <h2 class="text-3xl font-bold !mb-6 text-zinc-900 dark:text-white flex items-center gap-3">
-        最新更新 
+        知识体系 
         <span class="text-lg font-normal text-zinc-400 ml-1">({proPosts.length})</span>
       </h2>
-
-      <a 
-        href="/all" 
-        class="group inline-flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400 whitespace-nowrap transition-colors hover:text-indigo-700 dark:hover:text-indigo-300 no-underline"
-      >
-        全部资源 
-        <Icon 
-          name="right-arrow" 
-          class="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" 
-        />
-      </a>
   </div>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {
-        proPosts.slice(0, 12).map((post) => (
-          <ResourceCard 
-            title={post.data.title}
-            description={post.data.description}
-            href={`/${post.slug}`} 
-            date={post.data.date ? new Date(post.data.date).toLocaleDateString() : ''}
-            tag="Guide" 
-          />
-        ))
-      }
-    </div>
+  {/* ================= (Tabs 模式) ================= */}
 
-    { proPosts.length > 12 && (
-      <div class="mt-12 p-8 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800 rounded-2xl text-center">
-        <p class="text-zinc-500 dark:text-zinc-400 mb-4 text-sm leading-relaxed">
-          已展示最新 12 篇内容。更多 <span class="font-mono font-bold text-indigo-500">{proPosts.length - 12}</span> 篇高阶干货，<br/>
-          请通过 <span class="text-zinc-900 dark:text-white font-bold">左侧导航栏 (Sidebar)</span> 按分类查找，或使用 <span class="text-zinc-900 dark:text-white font-bold">Cmd+K</span> 搜索。
-        </p>
-      </div>
-    )}
+  <div class="custom-tabs-container">
+    <style is:global>{`
+      /* 1. 整个容器底部：一条连续不断的、极浅的长横线 */
+      .custom-tabs-container ul[role="tablist"] {
+        gap: 24px !important;
+        border-bottom: 1px solid rgba(150, 150, 150, 0.4) !important;
+        min-width: max-content !important;
+      }
+      
+      /* 2. 所有 Tab 按钮基础状态：隐藏多余短线，调整呼吸感 */
+      .custom-tabs-container a[role="tab"] {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+        padding-bottom: 16px !important;
+        /* 👇 核心技巧：往下挪 1 像素，用来盖住底部的长横线 */
+        margin-bottom: -1px !important; 
+        /* 👇 强制未选中时底线透明，彻底消灭断裂的短线 */
+        border-bottom: 2px solid transparent !important; 
+        transition: all 0.3s ease;
+      }
+
+      /* 3. 🎯 选中状态下的 Tab：强化视觉焦点 */
+      .custom-tabs-container a[role="tab"][aria-selected="true"] {
+        border-bottom: 2px solid !important; 
+      }
+    `}</style>
+
+    <Tabs>
+      {Object.entries(groupedPosts).map(([groupName, posts]) => (
+        <TabItem label={groupName}>
+          <div class="flex flex-col">
+            {posts.map((post) => {
+              const imgUrl = getHeroImage(post);
+              return (
+                <ResourceCard 
+                  title={post.data.title}
+                  description={post.data.description}
+                  href={`/${post.slug}`} 
+                  date={post.data.date ? new Date(post.data.date).toLocaleDateString() : ''}
+                  tag={post.data.tags && post.data.tags.length > 0 ? post.data.tags : [groupName]} 
+                  image={imgUrl}
+                />
+              )
+            })}
+          </div>
+        </TabItem>
+      ))}
+    </Tabs>
+  </div>
     
-    <div class="h-32 w-full"></div>
+  <div class="h-32 w-full"></div>
 
 </div>

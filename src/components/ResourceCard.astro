@@ -1,35 +1,65 @@
 ---
-import { Icon } from '@astrojs/starlight/components';
+interface Props {
+  title: string;
+  description?: string;
+  href: string;
+  date?: string;
+  tag?: string | string[];
+  image?: string | null; // 新增：接收图片参数
+}
 
-const { title, description, href, date, tag = "Article" } = Astro.props;
-
-// 🧠 核心逻辑：无论外部传入的是 "字符串" 还是 ["数组", "数组"]，统统转成数组方便后续循环
-const tags = Array.isArray(tag) ? tag : [tag];
+const { title, description, href, date, tag, image } = Astro.props;
+const tagsArray = Array.isArray(tag) ? tag : (tag ? [tag] : []);
 ---
 
-<a href={href} class="group flex flex-col gap-4 p-6 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg hover:border-gray-300 dark:hover:border-zinc-700 transition-all duration-300 no-underline h-full overflow-hidden hover:shadow-lg hover:-translate-y-1">
+{/* 核心容器 */}
+<article class="group py-6 sm:py-8 border-b border-zinc-200 dark:border-zinc-800 last:border-0">
   
-  <div class="flex items-center justify-between">
-    {/* 👇 改动开始：加了一个 div 包裹，用来横向排列多个标签 */}
-    <div class="flex flex-wrap gap-2">
-      {tags.map((t) => (
-        <span class="px-2.5 py-0.5 text-xs font-medium text-zinc-500 bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-400 rounded-full">
-          {t}
-        </span>
-      ))}
-    </div>
-    {/* 👆 改动结束 */}
+  {/* 👇 核心修复 1：把 items-start 换成了 items-stretch，强制左右两边等高 */}
+  <a href={href} class="flex flex-row gap-4 sm:gap-8 justify-between items-stretch !no-underline">
     
-    {date && <span class="text-xs font-mono text-gray-400 shrink-0">{date}</span>}
-  </div>
+    {/* 👇 左侧文字区 */}
+    <div class="flex flex-col flex-1 min-w-0">
+      
+      {/* 1. 标题：加了 !mb-3 和 !mb-4，强制拉开底部距离，同时确保 !mt-0 */}
+      <h3 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 !mb-1 sm:!mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 !mt-0 leading-snug">
+        {title}
+      </h3>
+      
+      {/* 2. 简介：加了 !mb-4 和 !mb-6，强制隔开标签栏 */}
+      {description && (
+        <p class="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 !mb-2 sm:!mb-2 line-clamp-2 leading-relaxed !mt-0">
+          {description}
+        </p>
+      )}
+      
+      {/* 3. 标签：使用了 !mt-auto 强制将其推至容器最底端，并加上 pt-2 保证保底间距 */}
+      <div class="flex items-center gap-3 sm:gap-4 !mt-auto pt-2">
+        {tagsArray.length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {tagsArray.map((t) => (
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+        {date && <span class="text-[11px] sm:text-xs text-zinc-400 dark:text-zinc-500">{date}</span>}
+      </div>
+      
+    </div>
 
-  <div class="flex flex-col gap-2">
-    <h4 class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 leading-snug transition-colors">
-      {title}
-    </h4>
-    <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
-      {description}
-    </p>
-  </div>
-
-</a>
+    {/* 右侧图片区：保持 16:9 宽幅比例 */}
+    {image && (
+      <div class="w-[120px] h-[67px] sm:w-[200px] sm:h-[112px] lg:w-[240px] lg:h-[135px] shrink-0 overflow-hidden rounded-md bg-zinc-50 dark:bg-zinc-800/50">
+        <img 
+          src={image} 
+          alt={title} 
+          class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
+      </div>
+    )}
+    
+  </a>
+</article>
