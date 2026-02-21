@@ -1,38 +1,65 @@
 ---
-import { Image } from 'astro:assets';
 import { Icon } from '@astrojs/starlight/components';
 
-// 接收 Props
-const { title, description, href, image, tag = "Featured" } = Astro.props;
+// 1. 🛡️ 接口定义：严格规范外部传进来的数据类型
+interface Props {
+  title: string;
+  description?: string;
+  href: string;
+  image?: string | null;
+  tag?: string | string[]; // 👈 核心修改 1：告诉系统，tag 可以是字符串，也可以是字符串数组
+}
+
+// 2. 接收外部参数，并给 tag 设定一个默认的数组兜底值
+const { title, description, href, image, tag = ["推荐"] } = Astro.props;
+
+// 3. 🧹 数据清洗：判断传进来的 tag 是不是数组，如果不是，就强行把它包成数组
+// 这样我们在下面就可以放心地使用 .map() 循环了
+const tagsArray = Array.isArray(tag) ? tag : (tag ? [tag] : []);
 ---
 
-<a href={href} class="group flex flex-col bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg hover:border-indigo-400 dark:hover:border-indigo-500 transition-all duration-300 no-underline h-full overflow-hidden hover:shadow-xl hover:-translate-y-1">
+{/* 📦 最外层容器：使用 group 绑定鼠标悬浮联动，添加阴影和上浮动画 (-translate-y-1) */}
+<a href={href} class="group flex flex-col bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg hover:border-amber-500 dark:hover:border-[#B8793A] transition-all duration-300 no-underline h-full overflow-hidden hover:shadow-xl hover:-translate-y-1">
   
-  {/* 🛡️ 防御性编程：只有当 image 存在时，才渲染图片区域 */}
+  {/* ================= 模块一：视觉图像区 ================= */}
+  {/* 防御性编程：只有当 image 存在时，才渲染图片区域，否则自动隐藏 */}
   {image && (
     <div class="h-48 overflow-hidden bg-gray-100 dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-800/50 relative">
-      <Image 
+      {/* 核心修复：使用原生的 <img> 标签以兼容自动提取的字符串路径，添加 lazy 懒加载提升性能 */}
+      <img
         src={image} 
         alt={title} 
         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+        loading="lazy"
       />
-      {/* 遮罩层：让图片在深色模式下稍微暗一点，更护眼 */}
+      {/* 高级 UI 细节：深色模式下的护眼遮罩层，鼠标悬浮时变亮，增加交互反馈 */}
       <div class="absolute inset-0 bg-black/0 dark:bg-black/20 group-hover:bg-black/0 transition-colors"></div>
     </div>
   )}
 
-  <div class="flex flex-col gap-2 p-6 flex-1">
+  {/* ================= 模块二：内容与元数据区 ================= */}
+  {/* flex-1 确保如果图片缺失，文字区会自动撑满整个卡片的高度 */}
+  <div class="flex flex-col p-6 flex-1">
     
-    <div class="flex items-center justify-between">
-      <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 dark:text-indigo-300 rounded-md border border-indigo-100 dark:border-indigo-800">
-        {tag}
-      </span>
-    </div>
+    {/* 🏷️ 核心修改 2：动态循环渲染所有标签 */}
+    {tagsArray.length > 0 && (
+      // 使用 flex-wrap 确保标签多了会自动换行，gap-2 控制标签之间的间距
+      <div class="flex flex-wrap items-center gap-2 !mb-3">
+        {tagsArray.map((t) => (
+          <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-900 bg-gradient-to-r from-[#E0A75F] to-[#F3C586] rounded-md border-none shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+            {t}
+          </span>
+        ))}
+      </div>
+    )}
 
-    <div class="flex flex-col gap-2 mt-2">
-      <h3 class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 leading-snug transition-colors">
+    {/* 📝 标题与简介区 */}
+    <div class="flex flex-col gap-2">
+      {/* 标题：鼠标悬浮时变色联动 (group-hover) */}
+      <h3 class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#B8793A] leading-snug transition-colors">
         {title}
       </h3>
+      {/* 简介：line-clamp-2 强制最多只显示两行文字，超出的部分变成省略号，防止破坏卡片高度 */}
       <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
         {description}
       </p>

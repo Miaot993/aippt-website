@@ -16,13 +16,13 @@ const tagsArray = Array.isArray(tag) ? tag : (tag ? [tag] : []);
 <article class="group py-6 sm:py-8 border-b border-zinc-200 dark:border-zinc-800 last:border-0">
   
   {/* 👇 核心修复 1：把 items-start 换成了 items-stretch，强制左右两边等高 */}
-  <a href={href} class="flex flex-row gap-4 sm:gap-8 justify-between items-stretch !no-underline">
+  <a href={href} class="flex flex-row gap-4 sm:gap-16 justify-between items-stretch !no-underline">
     
     {/* 👇 左侧文字区 */}
     <div class="flex flex-col flex-1 min-w-0">
       
       {/* 1. 标题：加了 !mb-3 和 !mb-4，强制拉开底部距离，同时确保 !mt-0 */}
-      <h3 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 !mb-1 sm:!mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 !mt-0 leading-snug">
+      <h3 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 !mb-1 sm:!mb-2 group-hover:text-amber-600 dark:group-hover:text-[#B8793A] transition-colors line-clamp-2 !mt-0 leading-snug">
         {title}
       </h3>
       

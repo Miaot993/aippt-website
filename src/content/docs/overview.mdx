@@ -1,5 +1,5 @@
 ---
-title: Pro Max 指挥中心
+title: Ai+PPT 核心资产库
 description: 全栈工作流与核心资产库
 template: splash
 prev: false
@@ -30,64 +30,69 @@ import ResourceCard from '../../components/ResourceCard.astro';
 import FeaturedCard from '../../components/FeaturedCard.astro';
 import coverImg1 from './04-jiaocheng/banner.png';
 
-{/* 👇 所有的 export 逻辑都统一放在这里（外层安全区） */}
+{/* ==============================================================
+  ⚙️ 第一部分：数据处理与核心逻辑区 (Data Processing & Logic)
+  ==============================================================
+*/}
 
+{/* 1. 全局图片资源池：动用 Vite 的 import.meta.glob 扫描并缓存 docs 目录下所有的图片，用于后续生成正确的静态哈希路径 */}
 export const allImages = import.meta.glob('/src/content/docs/**/*.{png,jpg,jpeg,webp,gif,svg}', { eager: true });
 
+{/* 2. 智能图片提取器：负责从 MDX 文件中精准抓取封面图片 */}
 export function getHeroImage(post) {
-  // 1. 优先尝试获取 frontmatter 里的图片 (如果有的话)
+  // A. 尝试获取 frontmatter (YAML头部) 里的图片配置
   let imgPath = post.data.hero?.image?.file || post.data.banner;
   
-  // 2. 🚀 核心黑科技：提取 Astro MDX 里的 import 语句！
-  // 专门匹配类似 `import bannerImg from "./01-images/banner.png";` 的代码
+  // B. 如果没有配置，尝试用正则抓取正文中由 import 引入的本地图片 (如 Astro 的 <Image> 组件)
   if (!imgPath) {
     const mdxImportMatch = post.body?.match(/import\s+.*?\s+from\s+['"]([^'"]+\.(?:png|jpe?g|webp|gif|svg))['"]/i);
-    if (mdxImportMatch) imgPath = mdxImportMatch[1]; // 完美抓到 "./01-images/banner.png"
+    if (mdxImportMatch) imgPath = mdxImportMatch[1]; 
   }
 
-  // 3. 兜底策略：提取标准 Markdown 图片 ![alt](url)
+  // C. 兜底策略：尝试用正则抓取正文中的标准 Markdown 图片语法 (![alt](url))
   if (!imgPath) {
     const mdMatch = post.body?.match(/!\[.*?\]\((.*?)\)/);
     if (mdMatch) imgPath = mdMatch[1];
   }
 
-  // 4. 如果全都没有，返回 null，隐藏右侧图片
+  // D. 终止条件与外链放行
   if (!imgPath) return null;
   if (imgPath.startsWith('http') || imgPath.startsWith('data:')) return imgPath;
 
-  // 5. 将抓取到的相对路径转换为 Vite 内存绝对路径
+  // E. 核心路径转换：将相对路径清理并拼装成带哈希值的 Vite 绝对路径
   const cleanImgPath = imgPath.replace(/^(\.\/|\/)/, ''); 
   const folderPath = post.id.split('/').slice(0, -1).join('/'); 
   const fullPath = `/src/content/docs/${folderPath ? folderPath + '/' : ''}${cleanImgPath}`;
-  const imageModule = allImages[fullPath];
   
+  // F. 从全局图片池中捞出真实的资源路径
+  const imageModule = allImages[fullPath];
   return imageModule?.default?.src || imageModule?.default || imgPath;
 }
 
-
-
-
+{/* 3. 核心文章数据源：获取全部文档，过滤不需要的文件，并确保按发布时间最新排序 */}
 export const proPosts = (await getCollection('docs'))
   .filter(post => {
-    const isNotLite = !post.id.startsWith('lite/');
-    const isNotSelf = post.id !== 'overview.mdx';
-    const isNotIndex = !post.slug.endsWith('index');
+    const isNotLite = !post.id.startsWith('lite/');     // 排除轻量版目录
+    const isNotSelf = post.id !== 'overview.mdx';       // 排除本页面自身
+    const isNotIndex = !post.slug.endsWith('index');    // 排除索引页
     return isNotLite && isNotSelf && isNotIndex;
   })
   .sort((a, b) => {
+    // 强制执行按日期倒序排列 (最新的文章排在每个 Tab 的最上面)
     const dateA = new Date(a.data.date || '2000-01-01');
     const dateB = new Date(b.data.date || '2000-01-01');
     return dateB.valueOf() - dateA.valueOf();
   });
 
+{/* 3.5 智能推荐引擎：筛选出带有 featured: true 标记的文章 */}
 export const featuredPosts = proPosts.filter(post => post.data.featured === true);
 
-{/* 👇 核心逻辑：按文件夹名称对文章进行分组 (必须在 div 外面) */}
+{/* 4. 智能分组引擎：按照文章所在的文件夹名称（去掉前缀数字），将所有文章归类到不同的对象数组中，供 Tabs 使用 */}
 export const groupedPosts = proPosts.reduce((acc, post) => {
   const parts = post.id.split('/');
   if (parts.length > 1) {
     const rawFolderName = parts[0];
-    const cleanName = rawFolderName.replace(/^\d+-/, ''); 
+    const cleanName = rawFolderName.replace(/^\d+-/, ''); // 拔掉文件夹名称前缀的数字和短横线 (如 '01-')
     if (!acc[cleanName]) acc[cleanName] = [];
     acc[cleanName].push(post);
   }
@@ -95,70 +100,73 @@ export const groupedPosts = proPosts.reduce((acc, post) => {
 }, {});
 
 
-{/* 👇 从这里开始才是真正的 UI 渲染区 */}
+{/* ==============================================================
+  🎨 第二部分：UI 渲染与展示区 (UI Rendering & Presentation)
+  ==============================================================
+*/}
+
 <div class="not-content">
 
-  {/* ================= SECTION 1: Featured ================= */}
-  
-  <h2 class="text-3xl font-bold !mb-6 text-gray-900 dark:text-white">核心资源</h2>
-  
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <FeaturedCard
-      title="Claude 商业叙事逻辑 SOP"
-      description="不要再让 AI 写车轱辘话。掌握麦肯锡顾问的思考框架，一键生成高质量大纲。"
-      href="/guides/overview/claude-logic"
-      image={coverImg1}
-      tag="SOP"
-    />
-    <FeaturedCard
-      title="MJ + Gamma 视觉流"
-      description="从 Midjourney 生图到 Gamma 排版，解决风格不统一的终极杀器。"
-      href="/guides/overview/visual-flow"
-      image={coverImg1}
-      tag="Design"
-    />
-  </div>
+  {/* ========== 模块 A：顶部核心资源 (全自动数据驱动) ========== */}
+  {featuredPosts.length > 0 && (
+    <>
+      <h2 class="text-3xl font-bold !mb-6 text-gray-900 dark:text-white">核心资源</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* 这里 .slice(0, 2) 表示最多只显示最新的 2 篇推荐文章，保持排版美观 */}
+        {featuredPosts.slice(0, 4).map((post) => {
+          const imgUrl = getHeroImage(post);
+          return (
+            <FeaturedCard
+              title={post.data.title}
+              description={post.data.description}
+              href={`/${post.slug}`}
+              image={imgUrl}
+              tag={post.data.tags && post.data.tags.length > 0 ? post.data.tags : ["推荐"]}
+            />
+          )
+        })}
+      </div>
 
-  <div class="h-16 w-full"></div> 
+      <div class="h-16 w-full"></div> 
+    </>
+  )}
 
-  {/* ================= SECTION 2: 分组知识库 (Tabs 模式) ================= */}
-  
+  {/* ========== 模块 B：系统知识体系 (Tab 动态分组列表) ========== */}
   <div class="mb-8 mt-16">
       <h2 class="text-3xl font-bold !mb-6 text-zinc-900 dark:text-white flex items-center gap-3">
         知识体系 
+        {/* 动态显示系统内收录的文章总数 */}
         <span class="text-lg font-normal text-zinc-400 ml-1">({proPosts.length})</span>
       </h2>
   </div>
     
-  {/* ================= (Tabs 模式) ================= */}
-
   <div class="custom-tabs-container">
     <style is:global>{`
-      /* 1. 整个容器底部：一条连续不断的、极浅的长横线 */
+      /* Tab 容器基础设置：控制底部全局贯穿的浅色长横线，强制撑满滚动区域 */
       .custom-tabs-container ul[role="tablist"] {
         gap: 24px !important;
         border-bottom: 1px solid rgba(150, 150, 150, 0.4) !important;
         min-width: max-content !important;
       }
       
-      /* 2. 所有 Tab 按钮基础状态：隐藏多余短线，调整呼吸感 */
+      /* Tab 按钮基础状态：去除左右内边距，利用负边距 (-1px) 覆盖全局横线，隐藏默认断层短线 */
       .custom-tabs-container a[role="tab"] {
         padding-left: 0px !important;
         padding-right: 0px !important;
         padding-bottom: 16px !important;
-        /* 👇 核心技巧：往下挪 1 像素，用来盖住底部的长横线 */
         margin-bottom: -1px !important; 
-        /* 👇 强制未选中时底线透明，彻底消灭断裂的短线 */
         border-bottom: 2px solid transparent !important; 
         transition: all 0.3s ease;
       }
 
-      /* 3. 🎯 选中状态下的 Tab：强化视觉焦点 */
+      /* Tab 按钮高亮状态：强化选中视觉效果 */
       .custom-tabs-container a[role="tab"][aria-selected="true"] {
         border-bottom: 2px solid !important; 
       }
     `}</style>
 
+    {/* 动态遍历 groupedPosts 对象，生成对应的 Tab 和 Medium 风格图文列表 */}
     <Tabs>
       {Object.entries(groupedPosts).map(([groupName, posts]) => (
         <TabItem label={groupName}>
