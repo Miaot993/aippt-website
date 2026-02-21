@@ -1,0 +1,60 @@
+---
+// src/components/home/FirstScreen.astro
+// 【架构师注释】这是网站的门面，负责第一眼吸引用户（Hero 英雄区）
+---
+
+<section class="pt-32 pb-20 px-6 border-b border-zinc-100 dark:border-zinc-800 relative overflow-hidden">
+  {/* 背景光晕效果：absolute 绝对定位，blur 产生模糊高光 */}
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+  <div class="max-w-5xl mx-auto text-center relative z-10">
+    {/* 顶部版本更新提示小药丸 */}
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 text-xs font-semibold mb-8 border border-zinc-200 dark:border-zinc-800">
+      <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+      <span>v2.0 Workflow 现已更新</span>
+    </div>
+
+    {/* 主标题：使用 text-transparent 和 bg-clip-text 实现文字渐变色 */}
+    <h1 class="text-5xl md:text-7xl font-extrabold text-zinc-900 dark:text-white mb-6 tracking-tight leading-tight">
+      别让 <span class="line-through decoration-red-500 decoration-4 text-zinc-400">PowerPoint</span> 限制你的思考<br />
+      这是你的 <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500">职场第二大脑</span>
+    </h1>
+
+    {/* 副标题 */}
+    <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+      大多数人还在手动调整文本框对齐，而你只需要掌握这套
+      <strong class="text-zinc-900 dark:text-white">"AI + PPT"</strong>
+      自动化工作流。轻松将 PPT 变成降维打击的商业武器
+    </p>
+
+    {/* 按钮组 */}
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+      <a href="#pricing" class="px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-xl font-bold hover:scale-105 transition-transform shadow-xl shadow-indigo-500/20">
+        立即解锁权限
+      </a>
+      <a href="#features" class="px-8 py-4 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 rounded-xl font-medium hover:bg-zinc-50 dark:hover:bg-zinc-700 transition">
+        查看工作流演示
+      </a>
+    </div>
+
+    {/* 底部数据证明模块 (Data Proof) */}
+    <div class="mt-16 pt-8 border-t border-zinc-100 dark:border-zinc-800 grid grid-cols-2 md:grid-cols-4 gap-8 opacity-70">
+      <div>
+        <div class="text-2xl font-bold text-zinc-900 dark:text-white">2,000+</div>
+        <div class="text-xs text-zinc-500 uppercase tracking-wider">付费用户</div>
+      </div>
+      <div>
+        <div class="text-2xl font-bold text-zinc-900 dark:text-white">15min</div>
+        <div class="text-xs text-zinc-500 uppercase tracking-wider">平均产出时间</div>
+      </div>
+      <div>
+        <div class="text-2xl font-bold text-zinc-900 dark:text-white">Top 1%</div>
+        <div class="text-xs text-zinc-500 uppercase tracking-wider">设计审美标准</div>
+      </div>
+      <div>
+        <div class="text-2xl font-bold text-zinc-900 dark:text-white">4.9/5</div>
+        <div class="text-xs text-zinc-500 uppercase tracking-wider">用户评分</div>
+      </div>
+    </div>
+  </div>
+</section>

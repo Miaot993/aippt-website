@@ -1,0 +1,45 @@
+---
+// src/components/home/FAQ.astro
+// 【架构师注释】使用原生的 details 和 summary 标签实现的手风琴折叠效果，无需 JS！
+---
+
+<section class="py-24 px-6 border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-3xl font-bold text-zinc-900 dark:text-white mb-12 text-center">常见疑问</h2>
+
+    <div class="space-y-4">
+      {/* 问答 1 */}
+      <details class="group bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 cursor-pointer hover:border-zinc-400 transition-all">
+        <summary class="flex justify-between items-center font-bold text-zinc-900 dark:text-white select-none">
+          购买后如何发货？
+          <span class="text-zinc-400 group-open:rotate-45 group-open:text-indigo-500 transition-transform text-2xl font-light leading-none">+</span>
+        </summary>
+        <div class="pt-4 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed border-t border-zinc-100 dark:border-zinc-800 mt-4">
+          24小时自动发货。采用飞书文档/Notion 形式交付，内容实时云端同步，你永远看到的都是最新版本。
+        </div>
+      </details>
+
+      {/* 问答 2 */}
+      <details class="group bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 cursor-pointer hover:border-zinc-400 transition-all">
+        <summary class="flex justify-between items-center font-bold text-zinc-900 dark:text-white select-none">
+          Lite 用户可以补差价升级 Pro 吗？
+          <span class="text-zinc-400 group-open:rotate-45 group-open:text-indigo-500 transition-transform text-2xl font-light leading-none">+</span>
+        </summary>
+        <div class="pt-4 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed border-t border-zinc-100 dark:border-zinc-800 mt-4">
+          当然可以。您可以随时联系客服，支付差价即可将 Access Key 权限升级为全局访问，无缝解锁所有高级内容。
+        </div>
+      </details>
+
+      {/* 问答 3 */}
+      <details class="group bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 cursor-pointer hover:border-zinc-400 transition-all">
+        <summary class="flex justify-between items-center font-bold text-zinc-900 dark:text-white select-none">
+          我没有设计基础，AI 教程看得懂吗？
+          <span class="text-zinc-400 group-open:rotate-45 group-open:text-indigo-500 transition-transform text-2xl font-light leading-none">+</span>
+        </summary>
+        <div class="pt-4 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed border-t border-zinc-100 dark:border-zinc-800 mt-4">
+          我是设计总监，但我更擅长“把复杂变简单”。教程专为非技术人员编写，只有“第一步、第二步、第三步”的傻瓜式操作。
+        </div>
+      </details>
+    </div>
+  </div>
+</section>

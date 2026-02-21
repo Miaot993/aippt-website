@@ -1,0 +1,64 @@
+---
+// src/components/home/Harvest.astro
+// 【架构师注释】价值主张模块，用 4 个带图标的卡片展示产品核心优势
+---
+
+<section id="features" class="py-24 px-6 bg-zinc-50 dark:bg-[#09090b]/50">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">你能在这里收获什么？</h2>
+      <p class="text-lg text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto">不仅仅是工具的使用，更是一整套经过商业验证的 AI 设计工作流与核心能力升级。</p>
+    </div>
+
+    {/* 卡片网格：电脑端 4 列 (lg:grid-cols-4)，平板 2 列 (md:grid-cols-2) */}
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+      {/* 卡片 1 */}
+      <div class="group bg-white dark:bg-[#18181b] p-8 rounded-2xl border border-zinc-100 dark:border-zinc-800 transition-all duration-300 relative overflow-hidden hover:border-indigo-500/30 flex flex-col">
+        <div class="w-10 h-10 text-indigo-500 mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-full h-full"><path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"></path></svg>
+        </div>
+        <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">10倍效率提升</h3>
+        <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-8 flex-grow">告别繁琐的手动排版和素材搜寻。掌握这套自动化工作流，将原本需要数天乃至一周的 PPT 工作缩短至几小时内完成。</p>
+        <div class="text-zinc-400 group-hover:text-indigo-500 transition-colors mt-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path></svg>
+        </div>
+      </div>
+
+      {/* 卡片 2 */}
+      <div class="group bg-white dark:bg-[#18181b] p-8 rounded-2xl border border-zinc-100 dark:border-zinc-800 transition-all duration-300 relative overflow-hidden hover:border-purple-500/30 flex flex-col">
+        <div class="w-10 h-10 text-purple-500 mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-full h-full"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.077-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42"></path></svg>
+        </div>
+        <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">总监级审美交付</h3>
+        <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-8 flex-grow">打破“只有设计师才能做好看”的偏见。利用 Gamma 的智能引擎和 Midjourney 电影级生图，零基础也能产出令人惊艳的视觉作品。</p>
+        <div class="text-zinc-400 group-hover:text-purple-500 transition-colors mt-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path></svg>
+        </div>
+      </div>
+
+      {/* 卡片 3 */}
+      <div class="group bg-white dark:bg-[#18181b] p-8 rounded-2xl border border-zinc-100 dark:border-zinc-800 transition-all duration-300 relative overflow-hidden hover:border-blue-500/30 flex flex-col">
+        <div class="w-10 h-10 text-blue-500 mb-6">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-full h-full"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"></path></svg>
+        </div>
+        <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">结构化商业叙事</h3>
+        <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-8 flex-grow">不仅仅是做页面，更是理逻辑。利用我们调教好的 Claude 商业思考模型，一键生成逻辑严密、极具说服力的路演级大纲。</p>
+        <div class="text-zinc-400 group-hover:text-blue-500 transition-colors mt-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path></svg>
+        </div>
+      </div>
+
+      {/* 卡片 4 */}
+      <div class="group bg-white dark:bg-[#18181b] p-8 rounded-2xl border border-zinc-100 dark:border-zinc-800 transition-all duration-300 relative overflow-hidden hover:border-green-500/30 flex flex-col">
+        <div class="w-10 h-10 text-green-500 mb-6">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-full h-full"><path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0-3-3m3 3 3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"></path></svg>
+        </div>
+        <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">独家资产与 SOP</h3>
+        <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-8 flex-grow">拒绝纸上谈兵。直接获取我们经过上百个项目验证的提示词库 (Prompts)、高级 CSS 代码和 PPT 源文件，拿来即用。</p>
+        <div class="text-zinc-400 group-hover:text-green-500 transition-colors mt-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
