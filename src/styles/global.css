@@ -231,3 +231,68 @@ header.header {
 .sidebar-content summary {
   padding-left: 4px !important; 
 } */
+
+/* ======================================================
+   🎯 Starlight 侧边栏 (Sidebar) 选中状态的“黑金”定制
+   ====================================================== */
+
+/* 1. 浅色模式（默认）下的选中状态 */
+/* 【架构师修改】：将 aside 替换为 .sidebar-content 和 .sidebar-pane */
+.sidebar-pane a[aria-current="page"],
+.sidebar-content a[aria-current="page"],
+mobile-starlight-nav a[aria-current="page"] {
+  /* 覆盖默认的背景色，换成我们尊贵的 Pro 金色渐变 */
+  background: linear-gradient(to right, rgb(191, 139, 66), rgb(230, 181, 112)) !important;
+  
+  /* 改变文字颜色为金色，并加粗显示 */
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  
+  /* 微调一点圆角，显得更精致 */
+  border-radius: 6px !important;
+}
+
+/* 2. 暗黑模式下的选中状态微调 */
+:root[data-theme="dark"] .sidebar-pane a[aria-current="page"],
+:root[data-theme="dark"] .sidebar-content a[aria-current="page"],
+:root[data-theme="dark"] mobile-starlight-nav a[aria-current="page"] {
+  /* 暗黑模式下背景透明度调低一点，文字调亮一点 */
+  background: linear-gradient(to right, rgb(116, 84, 39), rgb(103, 70, 29)) !important;
+  color: #ffcc8e !important;
+}
+
+/* ======================================================
+   🎯 侧边栏 (Sidebar) 嵌套引导竖线 (终极大结局版)
+   基于 F12 终极抓包：竖线其实是画在 li 标签上的！
+   ====================================================== */
+
+/* 深色模式：精准锁定底层 li，强行将其边框颜色改为 10% 透明白 */
+:root[data-theme="dark"] .sidebar-content ul li {
+  border-inline-start-color: rgba(255, 255, 255, 0.1) !important;
+  border-left-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 浅色模式：将其边框颜色改为 8% 透明黑 */
+:root[data-theme="light"] .sidebar-content ul li {
+  border-inline-start-color: rgba(0, 0, 0, 0.08) !important;
+  border-left-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ======================================================
+   🎯 右侧大纲目录 (On this page) 选中标题“黑金”定制
+   基于 Scrollspy 滚动侦测：aria-current="true"
+   ====================================================== */
+
+/* 1. 浅色模式：使用稍微深一点的暗金色，保证在白底上的阅读清晰度 */
+:root[data-theme="light"] starlight-toc a[aria-current="true"],
+:root[data-theme="light"] .right-sidebar-container a[aria-current="true"] {
+  color: rgb(191, 139, 66) !important;
+  font-weight: 600 !important;
+}
+
+/* 2. 深色模式：使用明亮的 Pro 金色，与左侧菜单的高亮文字保持一致 */
+:root[data-theme="dark"] starlight-toc a[aria-current="true"],
+:root[data-theme="dark"] .right-sidebar-container a[aria-current="true"] {
+  color: #ffcc8e !important;
+  font-weight: 600 !important;
+}

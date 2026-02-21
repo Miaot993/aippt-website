@@ -6,7 +6,7 @@
 <style is:inline id="paywall-css-lock">
   /* 1. 保留文章前2个元素(标题和导语)，从第6个元素起全部强制高斯模糊！ */
   .sl-markdown-content > *:nth-child(n+6):not(#pro-paywall):not(style):not(script) {
-      filter: blur(8px) !important;
+      filter: blur(4px) !important;
       opacity: 0.15 !important;
       pointer-events: none !important;
       user-select: none !important;
