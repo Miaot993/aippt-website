@@ -18,7 +18,7 @@ export default defineConfig({
 
   integrations: [
     starlight({
-      title: 'AI&PPT 第二大脑',
+      title: 'Ai+PPT 核心资产库',
 
       // 2. Logo 配置
       logo: {

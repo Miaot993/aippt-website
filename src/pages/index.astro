@@ -1,11 +1,11 @@
 ---
 // src/pages/index.astro
-// 【架构师注释】这里是首页的“骨架文件”，只负责定义外层环境，并把积木块拼装起来
-import "../styles/global.css";
+// 【架构师注释】首页骨架：只负责定义内容顺序，不再处理 Head 逻辑
+import BaseLayout from "../layouts/BaseLayout.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import logo from "../assets/logo.svg";
 
-// 👇 引入刚才我们拆分好的 5 个核心模块
+// 👇 引入 5 个核心业务模块积木
 import FirstScreen from "../components/home/FirstScreen.astro";
 import Harvest from "../components/home/Harvest.astro";
 import ZeroCode from "../components/home/ZeroCode.astro";
@@ -13,59 +13,41 @@ import Price from "../components/home/Price.astro";
 import FAQ from "../components/home/FAQ.astro";
 ---
 
-<html lang="zh-CN" class="scroll-smooth">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Design Intelligence - AI & PPT Workflow</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-
-    {/* 主题切换的防闪烁初始化脚本 */}
-    <script is:inline>
-      const theme = localStorage.getItem("starlight-theme");
-      const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (theme === "dark" || (!theme && systemDark)) {
-        document.documentElement.setAttribute("data-theme", "dark");
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.setAttribute("data-theme", "light");
-        document.documentElement.classList.remove("dark");
-      }
-    </script>
-  </head>
-
-  <body class="bg-white text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 font-sans antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-300">
-    
-    {/* 顶部导航栏 */}
-    <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 transition-colors duration-300">
-      <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <img src={logo.src} alt="Design Intelligence Logo" class="w-8 h-8" />
-          <span class="font-bold tracking-tight text-lg text-zinc-900 dark:text-zinc-100">
-            @youzha<span class="text-indigo-600 dark:text-indigo-400">PPT</span>
-          </span>
-        </div>
-        <div class="flex items-center gap-6 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-          <a href="#features" class="hidden md:block hover:text-indigo-600 transition">工作流</a>
-          <a href="#pricing" class="hidden md:block hover:text-indigo-600 transition">会员入口</a>
-          <ThemeToggle />
-        </div>
+{/* 🎯 使用 BaseLayout 包装，title 参数会传递给页签显示 */}
+<BaseLayout title="Ai+PPT 第二大脑">
+  
+  {/* 1. 顶部导航栏 (保持固定悬浮) */}
+  <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      {/* 左侧 Logo 区 */}
+      <div class="flex items-center gap-2">
+        <img src={logo.src} alt="Logo" class="w-8 h-8" />
+        <span class="font-bold tracking-tight text-[19px] text-zinc-900 dark:text-zinc-100">
+          Ai+PPT 第二大脑
+        </span>
       </div>
-    </nav>
 
-    {/* 🎯 核心主体区：像搭乐高一样组合我们刚才写的模块 */}
-    <main>
-      <FirstScreen />          {/* 1. 第一屏 */}
-      <Harvest />              {/* 2. 收获什么 */}
-      <ZeroCode />             {/* 3. 零代码首席设计师 */}
-      <Price />                {/* 4. 价格与登录验证 */}
-      <FAQ />                  {/* 5. 常见疑问 */}
-    </main>
+      {/* 右侧导航与主题切换 */}
+      <div class="flex items-center gap-6 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+        <a href="#features" class="hidden md:block hover:text-indigo-600 transition">工作流</a>
+        <a href="#pricing" class="hidden md:block hover:text-indigo-600 transition">会员入口</a>
+        <ThemeToggle />
+      </div>
+    </div>
+  </nav>
 
-    {/* 页面底部信息 */}
-    <footer class="py-8 text-center text-zinc-400 text-xs border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#09090b]">
-      <p>Copyright © youzhaPPT</p>
-    </footer>
+  {/* 2. 核心主体区：模块化拼装 */}
+  <main>
+    <FirstScreen />          {/* 1. 第一屏 */}
+    <Harvest />              {/* 2. 收获什么 */}
+    <ZeroCode />             {/* 3. 零代码首席设计师 */}
+    <Price />                {/* 4. 价格与登录验证 */}
+    <FAQ />                  {/* 5. 常见疑问 */}
+  </main>
 
-  </body>
-</html>
+  {/* 3. 页面底部 */}
+  <footer class="py-8 text-center text-zinc-400 text-xs border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#09090b]">
+    <p>Copyright © youzhaPPT</p>
+  </footer>
+
+</BaseLayout>
