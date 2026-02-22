@@ -1,4 +1,10 @@
 ---
+/**
+ * @component ResourceCard (标准资源卡片)
+ * @description 资源导航页的基础砖块。用于在目录索引页标准化地展示每一篇文章/资源的缩略图、标题、描述和标签。
+ * @tips 这是一个高频调用的组件（一个页面可能渲染几十个），请保持内部 HTML 结构尽量轻量，避免复杂的嵌套。
+ */
+
 interface Props {
   title: string;
   description?: string;
@@ -22,7 +28,7 @@ const tagsArray = Array.isArray(tag) ? tag : (tag ? [tag] : []);
     <div class="flex flex-col flex-1 min-w-0">
       
       {/* 1. 标题：加了 !mb-3 和 !mb-4，强制拉开底部距离，同时确保 !mt-0 */}
-      <h3 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 !mb-1 sm:!mb-2 group-hover:text-amber-600 dark:group-hover:text-[#B8793A] transition-colors line-clamp-2 !mt-0 leading-snug">
+      <h3 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 !mb-1 sm:!mb-2 group-hover:text-[#C49753] dark:group-hover:text-[#e2c08d] transition-colors line-clamp-2 !mt-0 leading-snug">
         {title}
       </h3>
       

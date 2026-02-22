@@ -1,4 +1,10 @@
 ---
+/**
+ * @component CustomMarkdownContent (自定义 MDX 渲染引擎)
+ * @description 核心内容引擎。负责接管 Starlight 默认的 Markdown 渲染逻辑。通常在这里注入全局级别的排版样式优化（Prose）、内容防拷贝逻辑，或者基于用户权限（Pro/Lite）动态隐藏/显示特定段落。
+ * @tips 轻易不要修改这里的结构，这会直接影响全站所有文档的展现形态。
+ */
+
 // src/components/CustomMarkdownContent.astro
 import Default from '@astrojs/starlight/components/MarkdownContent.astro';
 import Paywall from './Paywall.astro';

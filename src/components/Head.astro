@@ -1,4 +1,10 @@
 ---
+/**
+ * @component Head (全局 HTML 头部)
+ * @description 全局元数据控制台。用于覆盖或扩展框架的 `<head>` 标签。在这里注入 Google Analytics (GA4) 统计代码、自定义字体、以及给社交媒体分享用的 OpenGraph (OG) 协议标签。
+ * @tips 添加第三方脚本时，注意使用 `defer` 或 `async` 属性，避免阻塞页面首屏渲染。
+ */
+
 import type { Props } from "@astrojs/starlight/props";
 import Default from "@astrojs/starlight/components/Head.astro";
 

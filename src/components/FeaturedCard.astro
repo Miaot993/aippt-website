@@ -1,4 +1,10 @@
 ---
+/**
+ * @component FeaturedCard (精选内容卡片)
+ * @description 高级视觉组件。用于承载需要被“重点曝光”的教程或资源（如带有 Pro Max 标签的重量级文章）。通常带有更强的视觉权重（如渐变边框、阴影悬浮特效）。
+ * @tips 确保它的响应式表现良好，标题文字如果过长建议使用 `line-clamp-2` 进行截断，保证卡片高度一致。
+ */
+
 import { Icon } from '@astrojs/starlight/components';
 
 // 1. 🛡️ 接口定义：严格规范外部传进来的数据类型
@@ -19,7 +25,7 @@ const tagsArray = Array.isArray(tag) ? tag : (tag ? [tag] : []);
 ---
 
 {/* 📦 最外层容器：使用 group 绑定鼠标悬浮联动，添加阴影和上浮动画 (-translate-y-1) */}
-<a href={href} class="group flex flex-col bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg hover:border-amber-500 dark:hover:border-[#B8793A] transition-all duration-300 no-underline h-full overflow-hidden hover:shadow-xl hover:-translate-y-1">
+<a href={href} class="group flex flex-col bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg hover:border-[#E1CDAF] dark:hover:border-[#544938] transition-all duration-300 no-underline h-full overflow-hidden hover:shadow-xl hover:-translate-y-1">
   
   {/* ================= 模块一：视觉图像区 ================= */}
   {/* 防御性编程：只有当 image 存在时，才渲染图片区域，否则自动隐藏 */}
@@ -56,7 +62,7 @@ const tagsArray = Array.isArray(tag) ? tag : (tag ? [tag] : []);
     {/* 📝 标题与简介区 */}
     <div class="flex flex-col gap-2">
       {/* 标题：鼠标悬浮时变色联动 (group-hover) */}
-      <h3 class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#B8793A] leading-snug transition-colors">
+      <h3 class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#C49753] dark:group-hover:text-[#e2c08d] leading-snug transition-colors">
         {title}
       </h3>
       {/* 简介：line-clamp-2 强制最多只显示两行文字，超出的部分变成省略号，防止破坏卡片高度 */}

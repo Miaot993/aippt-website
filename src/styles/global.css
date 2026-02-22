@@ -257,8 +257,8 @@ mobile-starlight-nav a[aria-current="page"] {
 :root[data-theme="dark"] .sidebar-content a[aria-current="page"],
 :root[data-theme="dark"] mobile-starlight-nav a[aria-current="page"] {
   /* 暗黑模式下背景透明度调低一点，文字调亮一点 */
-  background: linear-gradient(to right, rgb(116, 84, 39), rgb(103, 70, 29)) !important;
-  color: #ffcc8e !important;
+  background: linear-gradient(to right, rgb(59, 55, 182), rgb(93, 64, 224)) !important;
+  color: #ffffff !important;
 }
 
 /* ======================================================
@@ -295,4 +295,109 @@ mobile-starlight-nav a[aria-current="page"] {
 :root[data-theme="dark"] .right-sidebar-container a[aria-current="true"] {
   color: #ffcc8e !important;
   font-weight: 600 !important;
+}
+
+/* ======================================================
+   🎯 左侧边栏 (Sidebar) 去背景手术 (无边界沉浸式融合)
+   ====================================================== */
+
+/* 1. 核心变量拦截：强行将侧边栏专属背景色设为透明 */
+:root,
+:root[data-theme="dark"],
+:root[data-theme="light"] {
+  --sl-color-bg-sidebar: transparent !important;
+}
+
+/* 2. 物理拆除兜底：防止底层容器自带写死的背景色 */
+.sidebar-pane,
+#starlight__sidebar {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+
+/* 3. 补齐分割线：强制让左侧边栏的右边缘线，与右侧大纲线完全使用同一个颜色变量 */
+#starlight__sidebar {
+  border-inline-end: 1px solid var(--sl-color-hairline) !important;
+}
+
+
+
+/* ======================================================
+   🌌 顶级流体极光引擎 (Kanri 复刻改版：压暗50% + 左至右流动)
+   原理：双层斑马线网格交错 + mix-blend-difference 差值混合
+   ====================================================== */
+
+:root {
+  /* 1. 定义黑底切割网格 (不变) */
+  --kanri-dark-grid: repeating-linear-gradient(
+    100deg,
+    #09090b 0%,
+    #09090b 7%,
+    transparent 10%,
+    transparent 12%,
+    #09090b 16%
+  );
+
+  /* 2. 定义极光流动色带 (不变，依然是科技蓝紫) */
+  /* 💡 如果想换成金流体，在这里改色值 */
+  --kanri-aurora-colors: repeating-linear-gradient(
+    100deg,
+    #2563eb 10%,
+    #818cf8 15%,
+    #60a5fa 20%,
+    #c4b5fd 25%,
+    #3b82f6 30%
+  );
+}
+
+/* 3. 在 body 最底层创造一个固定画布 */
+:root[data-theme="dark"] body::before,
+:root[data-theme="dark"] body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 50vh;
+  z-index: -10;
+  pointer-events: none;
+  filter: blur(10px);
+  
+  /* 🎯 核心修改一：亮度压暗 50% */
+  /* 原来是 0.6，现在改为 0.2，让它极其深邃内敛 */
+  opacity: 0.15;
+
+  /* 核心遮罩：聚焦在左上角，向右下角消失 */
+  mask-image: radial-gradient(ellipse at 20% 0%, black 10%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at 20% 0%, black 10%, transparent 70%);
+}
+
+/* 4. 极光底层静态网格 */
+:root[data-theme="dark"] body::before {
+  background-image: var(--kanri-dark-grid), var(--kanri-aurora-colors);
+  background-size: 300% 200%;
+  background-position: 50% 50%, 50% 50%;
+}
+
+/* 5. 极光表层动态网格 (产生流体错觉) */
+:root[data-theme="dark"] body::after {
+  background-image: var(--kanri-dark-grid), var(--kanri-aurora-colors);
+  background-size: 200% 100%;
+  background-attachment: fixed;
+  mix-blend-mode: difference;
+  /* 动画周期设为 60s，流动更缓慢优雅 */
+  animation: aurora-flow-rtl 80s linear infinite; 
+}
+
+/* 🎯 核心修改二：定义全新的“从左到右”流动动画 */
+@keyframes aurora-flow-rtl {
+  0% {
+    /* 起点在中间 */
+    background-position: 50% 50%, 50% 50%;
+  }
+  100% {
+    /* 终点走向负方向，视觉效果就是光流向右侧移动 */
+    background-position: -250% 50%, -250% 50%;
+  }
 }
